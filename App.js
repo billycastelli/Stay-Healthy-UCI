@@ -16,10 +16,12 @@ import {
   StatusBar,
   Button,
   Image,
-  AsyncStorage,
   KeyboardAvoidingView,
   useEffect,
 } from 'react-native';
+
+import AsyncStorage from '@react-native-community/async-storage';
+import Geolocation from '@react-native-community/geolocation';
 
 import {
   Header,
@@ -55,14 +57,19 @@ AppleHealthKit.initHealthKit(options, (err, results) => {
   }
 });
 
-function FetchUsername({userId, onUpdate}) {
+function FetchUsername(props) {
+  const {getUsername} = props;
   // For switching tabs, this code runs when the screen is "in focus"
   // Could probably be used to retrive the persistent name/height/weight data
   useFocusEffect(
     React.useCallback(() => {
-      console.log('In focus');
-
-      return () => console.log('Out of focus');
+      {
+        console.log('In focus');
+        getUsername();
+      }
+      return () => {
+        console.log('Out of focus');
+      };
     }, []),
   );
 
@@ -78,6 +85,7 @@ class ActivityView extends React.Component {
   constructor(props) {
     super(props);
     this.printSteps = this.printSteps.bind(this);
+    this.asyncUsernameFetch = this.asyncUsernameFetch.bind(this);
   }
 
   state = {
@@ -95,6 +103,14 @@ class ActivityView extends React.Component {
     });
   }
 
+  asyncUsernameFetch() {
+    console.log('Passed function');
+    AsyncStorage.getItem('username').then(value => {
+      console.log('username is...', value);
+      this.setState({username: value});
+    });
+  }
+
   render() {
     stepText = null;
     if (this.state.todaySteps) {
@@ -108,7 +124,8 @@ class ActivityView extends React.Component {
 
     return (
       <React.Fragment>
-        <View style={{flex: 1, paddingTop: 45}}>
+        <FetchUsername getUsername={this.asyncUsernameFetch} />
+        <View style={{flex: 1, paddingTop: 40}}>
           <TabHeader headerText="Activity analyzer" bgColor="#6c8672" />
         </View>
         <View
@@ -120,7 +137,6 @@ class ActivityView extends React.Component {
           <Text style={{fontSize: 24, fontWeight: 'bold'}}>{greeting}</Text>
           <Button title="Step count" onPress={this.printSteps}></Button>
           {stepText}
-          <FetchUsername />
         </View>
       </React.Fragment>
     );
@@ -142,9 +158,12 @@ class TabHeader extends React.Component {
 class FoodView extends React.Component {
   // This screen will use the users height, weight, age, etc to send
   // a request to our database and will receive and display food recommendations
+
   render() {
+    Geolocation.getCurrentPosition(info => console.log(info));
+
     return (
-      <View style={{flex: 1, paddingTop: 45}}>
+      <View style={{flex: 1, paddingTop: 40}}>
         <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
       </View>
     );
@@ -225,7 +244,7 @@ class ProfileView extends React.Component {
     // KeyboardAvoidingView moves the screen up when a keyboard is openedx
     return (
       <React.Fragment>
-        <View style={{flex: 1, paddingTop: 45}}>
+        <View style={{flex: 1, paddingTop: 40}}>
           <TabHeader headerText="User profile" bgColor="#737495" />
         </View>
         <View style={{flex: 1}}>
