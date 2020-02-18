@@ -33,41 +33,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useFocusEffect} from '@react-navigation/native';
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  header: {
+    height: 60,
+    padding: 15,
   },
 });
 
@@ -139,31 +107,48 @@ class ActivityView extends React.Component {
     }
 
     return (
-      <View
-        style={{
-          flex: 5,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text style={{fontSize: 24, fontWeight: 'bold'}}>{greeting}</Text>
-        <Button title="Step count" onPress={this.printSteps}></Button>
-        {stepText}
-        <FetchUsername />
+      <React.Fragment>
+        <View style={{flex: 1, paddingTop: 45}}>
+          <TabHeader headerText="Activity analyzer" bgColor="#6c8672" />
+        </View>
+        <View
+          style={{
+            flex: 5,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={{fontSize: 24, fontWeight: 'bold'}}>{greeting}</Text>
+          <Button title="Step count" onPress={this.printSteps}></Button>
+          {stepText}
+          <FetchUsername />
+        </View>
+      </React.Fragment>
+    );
+  }
+}
+
+class TabHeader extends React.Component {
+  render() {
+    return (
+      <View style={[styles.header, {backgroundColor: this.props.bgColor}]}>
+        <Text style={{color: 'white', fontSize: 24, textAlign: 'center'}}>
+          {this.props.headerText}
+        </Text>
       </View>
     );
   }
 }
 
-function FoodView() {
+class FoodView extends React.Component {
   // This screen will use the users height, weight, age, etc to send
   // a request to our database and will receive and display food recommendations
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{fontSize: 24}}>What would you like to eat?</Text>
-      <Text>Breakfast meals</Text>
-      <Text>Meal 1</Text>
-    </View>
-  );
+  render() {
+    return (
+      <View style={{flex: 1, paddingTop: 45}}>
+        <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
+      </View>
+    );
+  }
 }
 
 class ProfileView extends React.Component {
@@ -236,10 +221,23 @@ class ProfileView extends React.Component {
     storeWeight();
   }
 
-  render() { // KeyboardAvoidingView moves the screen up when a keyboard is openedx
+  render() {
+    // KeyboardAvoidingView moves the screen up when a keyboard is openedx
     return (
       <React.Fragment>
-        <KeyboardAvoidingView
+        <View style={{flex: 1, paddingTop: 45}}>
+          <TabHeader headerText="User profile" bgColor="#737495" />
+        </View>
+        <View style={{flex: 1}}>
+          <Text style={{fontSize: 20}}>Welcome, Username</Text>
+          <Image
+            style={{width: 50, height: 50}}
+            source={{
+              uri: 'https://facebook.github.io/react-native/img/tiny_logo.png',
+            }}
+          />
+        </View>
+        {/* <KeyboardAvoidingView
           style={{
             flex: 3,
             justifyContent: 'center',
@@ -252,8 +250,8 @@ class ProfileView extends React.Component {
             source={{
               uri: 'https://facebook.github.io/react-native/img/tiny_logo.png',
             }}
-          />
-        </KeyboardAvoidingView>
+          /> */}
+        {/* </KeyboardAvoidingView> */}
         <KeyboardAvoidingView
           behavior="padding"
           style={{
