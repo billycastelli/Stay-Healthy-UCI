@@ -1,0 +1,1 @@
+{"version":3,"sources":["NavigationNativeContainer.tsx"],"names":["Error"],"mappings":"AAAA,eAAe,YAAW;AACxB,QAAM,IAAIA,KAAJ,CACJ,sEADI,CAAN;AAGD","sourcesContent":["export default function() {\n  throw new Error(\n    \"'NavigationNativeContainer' has been renamed to 'NavigationContainer\"\n  );\n}\n"]}

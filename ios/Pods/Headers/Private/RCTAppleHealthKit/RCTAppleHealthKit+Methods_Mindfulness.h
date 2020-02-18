@@ -1,0 +1,1 @@
+../../../../../node_modules/rn-apple-healthkit/RCTAppleHealthKit/RCTAppleHealthKit+Methods_Mindfulness.h
