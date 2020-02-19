@@ -9,7 +9,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
@@ -24,6 +23,7 @@ import {
 
 import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from '@react-native-community/geolocation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import {
   Header,
@@ -34,16 +34,10 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import {useFocusEffect} from '@react-navigation/native';
 
-import {
-  NearbyMeal,
-  MealName,
-  MealOrigin,
-  TouchableMealListing,
-  ScreenTitle,
-  ScreenContainer,
-} from './Styles.js';
+import FoodScreen from './screens/FoodScreen';
 
 const styles = StyleSheet.create({
   header: {
@@ -161,51 +155,6 @@ class TabHeader extends React.Component {
         <Text style={{color: 'white', fontSize: 24, textAlign: 'center'}}>
           {this.props.headerText}
         </Text>
-      </View>
-    );
-  }
-}
-
-class NearbyMealItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <TouchableMealListing onPress={this.props.onPress}>
-        <NearbyMeal>
-          <MealName>{this.props.name}</MealName>
-          <MealOrigin>
-            {this.props.location} • {this.props.distance} •{' '}
-            {this.props.priceRange}
-          </MealOrigin>
-        </NearbyMeal>
-      </TouchableMealListing>
-    );
-  }
-}
-
-class FoodView extends React.Component {
-  // This screen will use the users height, weight, age, etc to send
-  // a request to our database and will receive and display food recommendations
-
-  render() {
-    Geolocation.getCurrentPosition(info => console.log(info));
-
-    return (
-      <View style={{flex: 1, paddingTop: 40}}>
-        <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
-        <ScreenContainer>
-          <ScreenTitle>Next meal: Lunch</ScreenTitle>
-          <NearbyMealItem
-            name="French Toast"
-            location="Ruby's Diner"
-            distance="0.8mi"
-            priceRange="$"
-            onPress={() => console.log('pressed meal item')}
-          />
-        </ScreenContainer>
       </View>
     );
   }
@@ -402,7 +351,9 @@ class App extends React.Component {
       <NavigationContainer>
         <Tab.Navigator>
           <Tab.Screen name="Activity" component={ActivityView} />
-          <Tab.Screen name="Food" component={FoodView} />
+          {/*<Tab.Screen name="Food" component={FoodView} />*/}
+          <Tab.Screen name="Food" component={FoodScreen} />
+
           <Tab.Screen name="Profile" component={ProfileView} />
         </Tab.Navigator>
       </NavigationContainer>

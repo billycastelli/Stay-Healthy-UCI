@@ -29,3 +29,10 @@ export const TouchableMealListing = styled.TouchableOpacity`
   border-radius: 5px;
   background-color: powderblue;
 `;
+
+export const AddMealTouchable = styled.TouchableOpacity`
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  padding: 5px 5px;
+  background-color: #4cc355;
+`;
