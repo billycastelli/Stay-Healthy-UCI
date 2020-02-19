@@ -249,7 +249,7 @@ class ProfileView extends React.Component {
   }
 
   saveNameInput() {
-    storeName = async () => {
+    const storeName = async () => {
       try {
         console.log('Attemping to store ' + this.state.nameInput);
         await AsyncStorage.setItem('username', this.state.nameInput);
@@ -260,7 +260,7 @@ class ProfileView extends React.Component {
   }
 
   saveHeightInput() {
-    storeHeight = async () => {
+    const storeHeight = async () => {
       try {
         console.log('Attemping to store ' + this.state.heightInput);
         await AsyncStorage.setItem('height', this.state.heightInput);
@@ -271,7 +271,7 @@ class ProfileView extends React.Component {
   }
 
   saveWeightInput() {
-    storeHeight = async () => {
+    const storeWeight = async () => {
       try {
         console.log('Attemping to store ' + this.state.weightInput);
         await AsyncStorage.setItem('weight', this.state.weightInput);
