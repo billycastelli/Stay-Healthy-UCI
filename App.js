@@ -6,6 +6,7 @@
  * @flow
  */
 
+import 'react-native-gesture-handler';
 import React from 'react';
 import {
   SafeAreaView,
@@ -18,6 +19,7 @@ import {
   Image,
   KeyboardAvoidingView,
   useEffect,
+  TouchableHighlight,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -33,6 +35,15 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useFocusEffect} from '@react-navigation/native';
+
+import {
+  NearbyMeal,
+  MealName,
+  MealOrigin,
+  TouchableMealListing,
+  ScreenTitle,
+  ScreenContainer,
+} from './Styles.js';
 
 const styles = StyleSheet.create({
   header: {
@@ -112,12 +123,12 @@ class ActivityView extends React.Component {
   }
 
   render() {
-    stepText = null;
+    let stepText = null;
     if (this.state.todaySteps) {
       stepText = <Text>Today's steps: {this.state.todaySteps.value}</Text>;
     }
 
-    var greeting = 'Hello there!';
+    let greeting = 'Hello there!';
     if (this.state.username) {
       greeting = 'Hello there, ' + this.state.username + '!';
     }
@@ -135,7 +146,7 @@ class ActivityView extends React.Component {
             alignItems: 'center',
           }}>
           <Text style={{fontSize: 24, fontWeight: 'bold'}}>{greeting}</Text>
-          <Button title="Step count" onPress={this.printSteps}></Button>
+          <Button title="Step count" onPress={this.printSteps} />
           {stepText}
         </View>
       </React.Fragment>
@@ -155,6 +166,26 @@ class TabHeader extends React.Component {
   }
 }
 
+class NearbyMealItem extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <TouchableMealListing onPress={this.props.onPress}>
+        <NearbyMeal>
+          <MealName>{this.props.name}</MealName>
+          <MealOrigin>
+            {this.props.location} • {this.props.distance} •{' '}
+            {this.props.priceRange}
+          </MealOrigin>
+        </NearbyMeal>
+      </TouchableMealListing>
+    );
+  }
+}
+
 class FoodView extends React.Component {
   // This screen will use the users height, weight, age, etc to send
   // a request to our database and will receive and display food recommendations
@@ -165,6 +196,16 @@ class FoodView extends React.Component {
     return (
       <View style={{flex: 1, paddingTop: 40}}>
         <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
+        <ScreenContainer>
+          <ScreenTitle>Next meal: Lunch</ScreenTitle>
+          <NearbyMealItem
+            name="French Toast"
+            location="Ruby's Diner"
+            distance="0.8mi"
+            priceRange="$"
+            onPress={() => console.log('pressed meal item')}
+          />
+        </ScreenContainer>
       </View>
     );
   }
@@ -248,7 +289,9 @@ class ProfileView extends React.Component {
           <TabHeader headerText="User profile" bgColor="#737495" />
         </View>
         <View style={{flex: 1}}>
-          <Text style={{fontSize: 20}}>Welcome, Username</Text>
+          <Text style={{fontSize: 20, textAlign: 'center'}}>
+            Welcome, Username
+          </Text>
           <Image
             style={{width: 50, height: 50}}
             source={{
