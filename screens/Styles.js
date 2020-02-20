@@ -31,8 +31,26 @@ export const TouchableMealListing = styled.TouchableOpacity`
 `;
 
 export const AddMealTouchable = styled.TouchableOpacity`
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   padding: 5px 5px;
-  background-color: #4cc355;
+  background-color: ${props => (props.disabled ? 'grey' : '#007aff')};
+  margin-bottom: 10px;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 20px;
+`;
+export const ColorButtonText = styled.Text`
+  color: white;
+  text-align: center;
+`;
+
+export const SingleMealContainer = styled(ScreenContainer)`
+  flex: 1;
+`;
+
+export const MealListingInfo = styled.View``;
+export const MealListingDesc = styled.Text`
+  font-size: 20px;
+  margin-bottom: 5px;
 `;

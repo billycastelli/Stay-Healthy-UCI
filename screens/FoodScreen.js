@@ -12,7 +12,11 @@ import {
   TouchableMealListing,
   ScreenTitle,
   ScreenContainer,
+  SingleMealContainer,
   AddMealTouchable,
+  MealListingInfo,
+  MealListingDesc,
+  ColorButtonText,
 } from './Styles.js';
 
 class TabHeader extends React.Component {
@@ -100,17 +104,20 @@ function MealInfoModal({route, navigation}) {
     tags,
   } = route.params;
   return (
-    <ScreenContainer>
+    <SingleMealContainer>
       <ScreenTitle>{name}</ScreenTitle>
-      <Text>{location}</Text>
-      <Text>{distance}</Text>
-      <Text>{priceRange}</Text>
-      <Text>{description}</Text>
-      <Text>{tags.map(tag => `${tag}, `)}</Text>
+      <MealListingInfo>
+        <MealListingDesc>{description}</MealListingDesc>
+        <Text>{location}</Text>
+        <Text>{distance}</Text>
+        <Text>{priceRange}</Text>
+
+        <Text>{tags.map(tag => `${tag}, `)}</Text>
+      </MealListingInfo>
       <AddMealTouchable onPress={() => console.log('Added meal')}>
-        <Text> Add meal</Text>
+        <ColorButtonText> Add meal</ColorButtonText>
       </AddMealTouchable>
-    </ScreenContainer>
+    </SingleMealContainer>
   );
 }
 
