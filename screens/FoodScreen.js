@@ -21,6 +21,18 @@ import {
   ColorButtonText,
 } from './Styles.js';
 
+const calcDistance = (userCoords, restaurantCoords) => {
+  const p = 0.017453292519943295;
+  const a =
+    0.5 -
+    Math.cos((userCoords.latitude - restaurantCoords.lat) * p) / 2 +
+    (Math.cos(userCoords.latitude * p) *
+      Math.cos(restaurantCoords.lat * p) *
+      (1 - Math.cos((userCoords.longitude - restaurantCoords.long) * p))) /
+      2;
+  return 12742 * Math.asin(Math.sqrt(a)) * 0.621371;
+};
+
 class TabHeader extends React.Component {
   render() {
     return (
@@ -50,7 +62,7 @@ class NearbyMealItem extends React.Component {
           <MealName>{this.props.name}</MealName>
           <MealOrigin>
             {this.props.location} • {this.props.distance} •{' '}
-            {this.props.priceRange}
+            {this.props.priceRange} • {this.props.calories} cal
           </MealOrigin>
         </NearbyMeal>
       </TouchableMealListing>
@@ -64,7 +76,13 @@ const FoodView = props => {
   // a request to our database and will receive and display food recommendations
   const places = placesJson.places;
   const firstPlace = places[0];
+  const [curPosition, setCurPosition] = useState({});
   Geolocation.getCurrentPosition(info => console.log(info));
+  Geolocation.getCurrentPosition(info => setCurPosition(info.coords));
+  const d = new Date();
+  const whichMeal =
+    d.getHours() < 11 ? 'breakfast' : d.getHours() < 16 ? 'lunch' : 'dinner';
+  const firstDistance = `${calcDistance(curPosition, firstPlace.Location)}mi`;
 
   return (
     <View style={{flex: 1, paddingTop: 40}}>
@@ -72,6 +90,7 @@ const FoodView = props => {
       <ScrollView>
         <ScreenContainer>
           <ScreenTitle>Next meal: Lunch</ScreenTitle>
+          {/*
           <NearbyMealItem
             name="French Toast"
             location="Ruby's Diner"
@@ -88,17 +107,22 @@ const FoodView = props => {
               })
             }
           />
-          {firstPlace.Menu.map(item => (
+		  */}
+          {firstPlace.Menu.filter(
+            item => item.tags.indexOf(whichMeal) > -1,
+          ).map(item => (
             <NearbyMealItem
+              key={item.item + firstPlace.name}
               name={item.item}
               priceRange={`$${item.price}`}
-              distance="0.0mi"
+              distance={firstDistance}
               location={firstPlace.name}
+              calories={item.calories}
               onPress={() =>
                 props.navigation.navigate('MealInfoModal', {
                   name: item.item,
                   location: firstPlace.name,
-                  distance: '0.0mi',
+                  distance: firstDistance,
                   priceRange: `$${item.price}`,
                   description: item.description,
                   tags: item.tags,
