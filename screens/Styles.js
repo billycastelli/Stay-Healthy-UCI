@@ -28,6 +28,7 @@ export const TouchableMealListing = styled.TouchableOpacity`
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   background-color: powderblue;
+  margin-bottom: 15px;
 `;
 
 export const AddMealTouchable = styled.TouchableOpacity`

@@ -1,9 +1,11 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Geolocation from '@react-native-community/geolocation';
 
-import {Text, View} from 'react-native';
+import {Text, View, ScrollView} from 'react-native';
+
+import placesJson from './places.json';
 
 import {
   NearbyMeal,
@@ -57,19 +59,17 @@ class NearbyMealItem extends React.Component {
 }
 
 const FoodStack = createStackNavigator();
-class FoodView extends React.Component {
+const FoodView = props => {
   // This screen will use the users height, weight, age, etc to send
   // a request to our database and will receive and display food recommendations
-  constructor(props) {
-    super(props);
-  }
+  const places = placesJson.places;
+  const firstPlace = places[0];
+  Geolocation.getCurrentPosition(info => console.log(info));
 
-  render() {
-    Geolocation.getCurrentPosition(info => console.log(info));
-
-    return (
-      <View style={{flex: 1, paddingTop: 40}}>
-        <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
+  return (
+    <View style={{flex: 1, paddingTop: 40}}>
+      <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
+      <ScrollView>
         <ScreenContainer>
           <ScreenTitle>Next meal: Lunch</ScreenTitle>
           <NearbyMealItem
@@ -78,7 +78,7 @@ class FoodView extends React.Component {
             distance="0.8mi"
             priceRange="$"
             onPress={() =>
-              this.props.navigation.navigate('MealInfoModal', {
+              props.navigation.navigate('MealInfoModal', {
                 name: 'French Toast',
                 location: "Ruby's Diner",
                 distance: '0.8mi',
@@ -88,11 +88,29 @@ class FoodView extends React.Component {
               })
             }
           />
+          {firstPlace.Menu.map(item => (
+            <NearbyMealItem
+              name={item.item}
+              priceRange={`$${item.price}`}
+              distance="0.0mi"
+              location={firstPlace.name}
+              onPress={() =>
+                props.navigation.navigate('MealInfoModal', {
+                  name: item.item,
+                  location: firstPlace.name,
+                  distance: '0.0mi',
+                  priceRange: `$${item.price}`,
+                  description: item.description,
+                  tags: item.tags,
+                })
+              }
+            />
+          ))}
         </ScreenContainer>
-      </View>
-    );
-  }
-}
+      </ScrollView>
+    </View>
+  );
+};
 
 function MealInfoModal({route, navigation}) {
   const {
