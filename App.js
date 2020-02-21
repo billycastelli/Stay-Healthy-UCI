@@ -7,19 +7,31 @@
  */
 
 import 'react-native-gesture-handler';
+import {
+  Button as RneButton,
+  ThemeProvider,
+  Input,
+  Text,
+  Card,
+  ListItem,
+} from 'react-native-elements';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
-  Text,
+  // Text,
   StatusBar,
   Button,
   Image,
   KeyboardAvoidingView,
   useEffect,
   TouchableHighlight,
+  TextInput,
+  Switch,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -53,7 +65,7 @@ const styles = StyleSheet.create({
 });
 
 import AppleHealthKit from 'rn-apple-healthkit';
-import {TextInput} from 'react-native-gesture-handler';
+// import {TextInput} from 'react-native-gesture-handler';
 
 let options = {
   permissions: {
@@ -222,12 +234,15 @@ class ProfileView extends React.Component {
     this.handleHeightChange = this.handleHeightChange.bind(this);
     this.saveHeightInput = this.saveHeightInput.bind(this);
     this.handleWeightChange = this.handleWeightChange.bind(this);
-    this.saveWeightInput = this.handleWeightChange.bind(this);
+    this.saveWeightInput = this.saveWeightInput.bind(this);
   }
   state = {
     nameInput: '',
     heightInput: '',
     weightInput: '',
+    username: '',
+    height: '',
+    weight: '',
   };
 
   handleUsernameChange(inputText) {
@@ -253,7 +268,8 @@ class ProfileView extends React.Component {
       try {
         console.log('Attemping to store ' + this.state.nameInput);
         await AsyncStorage.setItem('username', this.state.nameInput);
-        console.log('Saved username?');
+        this.setState({username: this.state.nameInput});
+        this.console.log('Saved username?');
       } catch (error) {}
     };
     storeName();
@@ -264,6 +280,7 @@ class ProfileView extends React.Component {
       try {
         console.log('Attemping to store ' + this.state.heightInput);
         await AsyncStorage.setItem('height', this.state.heightInput);
+        this.setState({height: this.state.heightInput});
         console.log('Saved height?');
       } catch (error) {}
     };
@@ -275,120 +292,198 @@ class ProfileView extends React.Component {
       try {
         console.log('Attemping to store ' + this.state.weightInput);
         await AsyncStorage.setItem('weight', this.state.weightInput);
+        this.setState({weight: this.state.weightInput});
         console.log('Saved weight?');
       } catch (error) {}
     };
     storeWeight();
   }
 
+  componentDidMount() {
+    AsyncStorage.getItem('username').then(value => {
+      console.log('username is...', value);
+      this.setState({username: value});
+    });
+
+    AsyncStorage.getItem('height').then(value => {
+      console.log('height is...', value);
+      this.setState({height: value});
+    });
+
+    AsyncStorage.getItem('weight').then(value => {
+      console.log('weight is...', value);
+      this.setState({weight: value});
+    });
+  }
+
   render() {
-    // KeyboardAvoidingView moves the screen up when a keyboard is openedx
+    // KeyboardAvoidingView moves the screen up when a keyboard is opened
+
+    let emptyProfile = (
+      <React.Fragment>
+        <Card title="New user">
+          <Text style={{fontSize: 16}}>
+            Fill our your profile to begin your health journey!
+          </Text>
+        </Card>
+      </React.Fragment>
+    );
+
+    let filledProfile = (
+      <ProfileCard
+        username={this.state.username}
+        height={this.state.height}
+        weight={this.state.weight}
+      />
+    );
+
+    let profileCard = emptyProfile;
+
+    if (this.state.username) {
+      console.log('Switching card');
+      profileCard = filledProfile;
+    }
     return (
       <React.Fragment>
-        <View style={{flex: 1, paddingTop: 40}}>
-          <TabHeader headerText="User profile" bgColor="#737495" />
-        </View>
-        <View style={{flex: 1}}>
-          <Text style={{fontSize: 20, textAlign: 'center'}}>
-            Welcome, Username
+        <KeyboardAwareScrollView>
+          <View style={{flex: 1, paddingTop: 40}}>
+            <TabHeader headerText="User profile" bgColor="#737495" />
+          </View>
+          {profileCard}
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              paddingTop: 12,
+              paddingLeft: 9,
+              paddingBottom: 8,
+            }}>
+            Metrics
           </Text>
-          <Image
-            style={{width: 50, height: 50}}
-            source={{
-              uri: 'https://facebook.github.io/react-native/img/tiny_logo.png',
-            }}
+
+          <ProfileInput
+            attribute="name"
+            handleChangeFunction={this.handleUsernameChange}
+            stateInput={this.state.nameInput}
+            saveFunction={this.saveNameInput}
+            placeholder="Lisa"
+          />
+
+          <ProfileInput
+            attribute="height (inches)"
+            handleChangeFunction={this.handleHeightChange}
+            stateInput={this.state.heightInput}
+            saveFunction={this.saveHeightInput}
+            placeholder="64"
+          />
+
+          <ProfileInput
+            attribute="weight (pounds)"
+            handleChangeFunction={this.handleWeightChange}
+            stateInput={this.state.weightInput}
+            saveFunction={this.saveWeightInput}
+            placeholder="150"
+          />
+
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              paddingTop: 6,
+              paddingLeft: 9,
+              paddingBottom: 8,
+            }}>
+            Dietary Restrictions
+          </Text>
+          <View>
+            <ListItem
+              title="Vegan?"
+              switch
+              onChange={() => console.log('Switched')}
+              bottomDivider
+            />
+            <ListItem
+              title="Vegetarian?"
+              switch
+              onChange={() => console.log('Switched')}
+              bottomDivider
+            />
+          </View>
+        </KeyboardAwareScrollView>
+      </React.Fragment>
+    );
+  }
+}
+
+class ProfileSwitch extends React.Component {}
+
+class ProfileCard extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    let bmi = 'Enter your height and weight to calculate BMi';
+    if (this.props.weight && this.props.height) {
+      console.log('Both present');
+      bmi = (
+        (Number(this.props.weight) /
+          Number(this.props.height) /
+          Number(this.props.height)) *
+        703
+      ).toFixed(2);
+    }
+    return (
+      <React.Fragment>
+        <Card title={this.props.username}>
+          <Text style={{fontSize: 18, paddingBottom: 4}}>
+            Height: {this.props.height}
+          </Text>
+          <Text style={{fontSize: 18, paddingBottom: 4}}>
+            Weight: {this.props.weight}
+          </Text>
+          <Text style={{fontSize: 18, paddingBottom: 4}}>BMI: {bmi}</Text>
+        </Card>
+      </React.Fragment>
+    );
+  }
+}
+
+class ProfileInput extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    let label = 'Enter your ' + this.props.attribute;
+    return (
+      <View
+        style={{
+          flex: 5,
+          flexDirection: 'row',
+          paddingBottom: 32,
+        }}>
+        <View style={{flex: 4}}>
+          <Input
+            placeholder={this.props.placeholder}
+            onChangeText={this.props.handleChangeFunction}
+            defaultValue={this.props.stateInput}
+            label={label}
           />
         </View>
-        {/* <KeyboardAvoidingView
+        <View
           style={{
-            flex: 3,
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
+            flex: 2,
+            paddingTop: 24,
+            paddingRight: 8,
           }}>
-          <Text>Welcome, Username</Text>
-          <Image
-            style={{width: 50, height: 50}}
-            source={{
-              uri: 'https://facebook.github.io/react-native/img/tiny_logo.png',
-            }}
-          /> */}
-        {/* </KeyboardAvoidingView> */}
-        <KeyboardAvoidingView
-          behavior="padding"
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}>
-          <Text>Enter your name</Text>
-          <TextInput
-            style={{
-              height: 40,
-              width: 100,
-              borderColor: '#8b95a6',
-              borderWidth: 1,
-            }}
-            onChangeText={this.handleUsernameChange}
-            defaultValue={this.state.nameInput}
-          />
-          <Button title="Submit" onPress={this.saveNameInput}>
+          <RneButton
+            type="outline"
+            title="Submit"
+            onPress={this.props.saveFunction}>
             Submit
-          </Button>
-        </KeyboardAvoidingView>
-
-        <KeyboardAvoidingView
-          behavior="padding"
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}>
-          <Text>Enter your height</Text>
-          <TextInput
-            style={{
-              height: 40,
-              width: 100,
-              borderColor: '#8b95a6',
-              borderWidth: 1,
-            }}
-            onChangeText={this.handleHeightChange}
-            defaultValue={this.state.heightInput}
-          />
-          <Button title="Submit" onPress={this.saveHeightInput}>
-            Submit
-          </Button>
-        </KeyboardAvoidingView>
-
-        <KeyboardAvoidingView
-          behavior="padding"
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}>
-          <Text>Enter your weight (in pounds)</Text>
-          <TextInput
-            style={{
-              height: 40,
-              width: 100,
-              borderColor: '#8b95a6',
-              borderWidth: 1,
-            }}
-            onChangeText={this.handleWeightChange}
-            defaultValue={this.state.weightInput}
-            keyboardType="number-pad"
-            returnKeyType="done"
-          />
-          {/* <Text>Echo: {this.state.weightInput}</Text> */}
-          <Button title="Submit" onPress={this.saveWeightInput}>
-            Submit
-          </Button>
-        </KeyboardAvoidingView>
-      </React.Fragment>
+          </RneButton>
+        </View>
+      </View>
     );
   }
 }
