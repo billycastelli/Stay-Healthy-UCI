@@ -6,6 +6,9 @@
  * @flow
  */
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+Icon.loadFont();
+
 import 'react-native-gesture-handler';
 import {
   Button as RneButton,
@@ -460,7 +463,7 @@ class ProfileInput extends React.Component {
         style={{
           flex: 5,
           flexDirection: 'row',
-          paddingBottom: 32,
+          paddingBottom: 24,
         }}>
         <View style={{flex: 4}}>
           <Input
@@ -473,7 +476,7 @@ class ProfileInput extends React.Component {
         <View
           style={{
             flex: 2,
-            paddingTop: 24,
+            paddingTop: 20,
             paddingRight: 8,
           }}>
           <RneButton
@@ -495,7 +498,27 @@ class App extends React.Component {
   render() {
     return (
       <NavigationContainer>
-        <Tab.Navigator>
+        <Tab.Navigator
+          screenOptions={({route}) => ({
+            tabBarIcon: ({focused, color, size}) => {
+              let iconName;
+
+              if (route.name === 'Activity') {
+                iconName = 'child';
+              } else if (route.name === 'Food') {
+                iconName = 'spoon';
+              } else if (route.name === 'Profile') {
+                iconName = 'user-circle-o';
+              }
+
+              // You can return any component that you like here!
+              return <Icon name={iconName} size={25} color="grey" />;
+            },
+          })}
+          tabBarOptions={{
+            activeTintColor: 'tomato',
+            inactiveTintColor: 'gray',
+          }}>
           <Tab.Screen name="Activity" component={ActivityView} />
           <Tab.Screen name="Food" component={FoodView} />
           <Tab.Screen name="Profile" component={ProfileView} />
