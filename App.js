@@ -38,6 +38,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {useFocusEffect} from '@react-navigation/native';
 
 import FoodScreen from './screens/FoodScreen';
+import DiaryScreen from './screens/DiaryScreen';
+import AppContext from './AppContext';
 
 const styles = StyleSheet.create({
   header: {
@@ -344,18 +346,55 @@ class ProfileView extends React.Component {
 
 const Tab = createBottomTabNavigator();
 class App extends React.Component {
+  addDiaryEntry = (food, date = null) => {
+    if (!date) {
+      date = new Date();
+      date = date.toISOString();
+      date = date.slice(0, date.indexOf('T'));
+    }
+    const updateDiary = async () => {
+      try {
+        // await AsyncStorage.setItem('diary', 'my secret value');
+        const diaryJSON = await AsyncStorage.getItem('diary');
+        let diary = JSON.parse(diaryJSON);
+        if (!diary) diary = [];
+        const entry = diary.filter(obj => obj.id === date);
+        if (entry.length < 1) {
+          diary.push({
+            id: date,
+            log: [food],
+          });
+        } else {
+          entry[0].log.push(food);
+        }
+        await AsyncStorage.setItem('diary', JSON.stringify(diary));
+        console.log('================ updated diary:', diary);
+      } catch (e) {
+        // save error
+        console.error(e);
+      }
+    };
+
+    updateDiary();
+  };
   // Handles switching between tabs
   // Each tab is a component
   render() {
     return (
       <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Activity" component={ActivityView} />
-          {/*<Tab.Screen name="Food" component={FoodView} />*/}
-          <Tab.Screen name="Food" component={FoodScreen} />
+        <AppContext.Provider
+          value={{
+            addDiaryEntry: this.addDiaryEntry,
+          }}>
+          <Tab.Navigator>
+            <Tab.Screen name="Activity" component={ActivityView} />
+            {/*<Tab.Screen name="Food" component={FoodView} />*/}
+            <Tab.Screen name="Food" component={FoodScreen} />
 
-          <Tab.Screen name="Profile" component={ProfileView} />
-        </Tab.Navigator>
+            <Tab.Screen name="Profile" component={ProfileView} />
+            <Tab.Screen name="Diary" component={DiaryScreen} />
+          </Tab.Navigator>
+        </AppContext.Provider>
       </NavigationContainer>
     );
   }

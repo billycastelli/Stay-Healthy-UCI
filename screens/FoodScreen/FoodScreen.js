@@ -1,7 +1,8 @@
 import 'react-native-gesture-handler';
-import React, {useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Geolocation from '@react-native-community/geolocation';
+import AppContext from '../../AppContext';
 
 import {Text, View, ScrollView} from 'react-native';
 
@@ -77,12 +78,18 @@ const FoodView = props => {
   const places = placesJson.places;
   const firstPlace = places[0];
   const [curPosition, setCurPosition] = useState({});
-  Geolocation.getCurrentPosition(info => console.log(info));
-  Geolocation.getCurrentPosition(info => setCurPosition(info.coords));
+  const [firstDistance, setFirstDistance] = useState('-0.0mi');
+  // Geolocation.getCurrentPosition(info => setCurPosition(info.coords));
   const d = new Date();
   const whichMeal =
     d.getHours() < 11 ? 'breakfast' : d.getHours() < 16 ? 'lunch' : 'dinner';
-  const firstDistance = `${calcDistance(curPosition, firstPlace.Location)}mi`;
+  // const firstDistance = `${calcDistance(curPosition, firstPlace.Location)}mi`;
+  useEffect(() => {
+    Geolocation.getCurrentPosition(info => console.log(info));
+    Geolocation.getCurrentPosition(info =>
+      setFirstDistance(`${calcDistance(info.coords, firstPlace.Location)}mi`),
+    );
+  }, [firstPlace.Location]);
 
   return (
     <View style={{flex: 1, paddingTop: 40}}>
@@ -126,6 +133,7 @@ const FoodView = props => {
                   priceRange: `$${item.price}`,
                   description: item.description,
                   tags: item.tags,
+                  calories: item.calories,
                 })
               }
             />
@@ -144,7 +152,9 @@ function MealInfoModal({route, navigation}) {
     priceRange,
     description,
     tags,
+    calories,
   } = route.params;
+  const {addDiaryEntry} = useContext(AppContext);
   return (
     <SingleMealContainer>
       <ScreenTitle>{name}</ScreenTitle>
@@ -153,10 +163,19 @@ function MealInfoModal({route, navigation}) {
         <Text>{location}</Text>
         <Text>{distance}</Text>
         <Text>{priceRange}</Text>
+        <Text>{calories}</Text>
 
         <Text>{tags.map(tag => `${tag}, `)}</Text>
       </MealListingInfo>
-      <AddMealTouchable onPress={() => console.log('Added meal')}>
+      <AddMealTouchable
+        onPress={() =>
+          addDiaryEntry({
+            name: name,
+            location: location,
+            calories: calories,
+            tags: tags,
+          })
+        }>
         <ColorButtonText> Add meal</ColorButtonText>
       </AddMealTouchable>
     </SingleMealContainer>
