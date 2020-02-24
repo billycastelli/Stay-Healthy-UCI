@@ -238,14 +238,18 @@ class ProfileView extends React.Component {
     this.saveHeightInput = this.saveHeightInput.bind(this);
     this.handleWeightChange = this.handleWeightChange.bind(this);
     this.saveWeightInput = this.saveWeightInput.bind(this);
+    this.handleAgeChange = this.handleAgeChange.bind(this);
+    this.saveAgeInput = this.saveAgeInput.bind(this);
   }
   state = {
     nameInput: '',
     heightInput: '',
     weightInput: '',
+    ageInput: '',
     username: '',
     height: '',
     weight: '',
+    age: '',
   };
 
   handleUsernameChange(inputText) {
@@ -263,6 +267,12 @@ class ProfileView extends React.Component {
   handleWeightChange(inputText) {
     this.setState({
       weightInput: inputText,
+    });
+  }
+
+  handleAgeChange(inputText) {
+    this.setState({
+      ageInput: inputText,
     });
   }
 
@@ -302,6 +312,18 @@ class ProfileView extends React.Component {
     storeWeight();
   }
 
+  saveAgeInput() {
+    const storeAge = async () => {
+      try {
+        console.log('Attemping to store ' + this.state.ageInput);
+        await AsyncStorage.setItem('age', this.state.ageInput);
+        this.setState({age: this.state.ageInput});
+        console.log('Saved age?');
+      } catch (error) {}
+    };
+    storeAge();
+  }
+
   componentDidMount() {
     AsyncStorage.getItem('username').then(value => {
       console.log('username is...', value);
@@ -316,6 +338,11 @@ class ProfileView extends React.Component {
     AsyncStorage.getItem('weight').then(value => {
       console.log('weight is...', value);
       this.setState({weight: value});
+    });
+
+    AsyncStorage.getItem('age').then(value => {
+      console.log('age is...', value);
+      this.setState({age: value});
     });
   }
 
@@ -337,6 +364,7 @@ class ProfileView extends React.Component {
         username={this.state.username}
         height={this.state.height}
         weight={this.state.weight}
+        age={this.state.age}
       />
     );
 
@@ -370,6 +398,14 @@ class ProfileView extends React.Component {
             stateInput={this.state.nameInput}
             saveFunction={this.saveNameInput}
             placeholder="Lisa"
+          />
+
+          <ProfileInput
+            attribute="age (years)"
+            handleChangeFunction={this.handleAgeChange}
+            stateInput={this.state.ageInput}
+            saveFunction={this.saveAgeInput}
+            placeholder="21"
           />
 
           <ProfileInput
@@ -424,27 +460,60 @@ class ProfileCard extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  calculateBMI(height, weight) {
+    bmi = ((Number(weight) / Number(height) / Number(height)) * 703).toFixed(2);
+    return bmi;
+  }
+
+  harrisBenedictMale(height, weight, age) {
+    return (
+      (66 + 6.2 * Number(weight) + 12.7 * Number(height) - 6.67 * Number(age)) *
+      1.75
+    ).toFixed(0);
+  }
+
+  harrisBenedictFemale(height, weight, age) {
+    return (
+      (655.1 +
+        4.35 * Number(weight) +
+        4.7 * Number(height) -
+        4.7 * Number(age)) *
+      1.75
+    ).toFixed(0);
+  }
+
   render() {
-    let bmi = 'Enter your height and weight to calculate BMi';
-    if (this.props.weight && this.props.height) {
-      console.log('Both present');
-      bmi = (
-        (Number(this.props.weight) /
-          Number(this.props.height) /
-          Number(this.props.height)) *
-        703
-      ).toFixed(2);
+    let bmi = '\nEnter your height and weight to calculate BMi';
+    if (this.props.height && this.props.weight) {
+      bmi = this.calculateBMI(this.props.height, this.props.weight);
     }
+
+    let calories = '\nEnter gender and age to approximate calorie intake';
+    if (this.props.height && this.props.weight && this.props.age) {
+      calories = this.harrisBenedictMale(
+        this.props.height,
+        this.props.weight,
+        this.props.age,
+      );
+    }
+
     return (
       <React.Fragment>
         <Card title={this.props.username}>
           <Text style={{fontSize: 18, paddingBottom: 4}}>
-            Height: {this.props.height}
+            Age: {this.props.age} years
           </Text>
           <Text style={{fontSize: 18, paddingBottom: 4}}>
-            Weight: {this.props.weight}
+            Height: {this.props.height} inches
+          </Text>
+          <Text style={{fontSize: 18, paddingBottom: 4}}>
+            Weight: {this.props.weight} lbs
           </Text>
           <Text style={{fontSize: 18, paddingBottom: 4}}>BMI: {bmi}</Text>
+          <Text style={{fontSize: 18, paddingBottom: 4}}>
+            Daily recommendation: {calories} cals
+          </Text>
         </Card>
       </React.Fragment>
     );
