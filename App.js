@@ -7,6 +7,15 @@
  */
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+} from 'react-native-chart-kit';
+
 Icon.loadFont();
 
 import 'react-native-gesture-handler';
@@ -35,6 +44,7 @@ import {
   TouchableHighlight,
   TextInput,
   Switch,
+  Dimensions,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -127,6 +137,20 @@ class ActivityView extends React.Component {
         console.log('RESULTS FROM STATE', this.state.todaySteps);
       });
     });
+
+    var old_date = new Date();
+    old_date.setDate(old_date.getDate() - 7);
+
+    let options = {
+      startDate: new Date(2020, 3, 1).toISOString(), // required
+      endDate: new Date().toISOString(), // optional; default now
+    };
+    AppleHealthKit.getDailyStepCountSamples(options, (err, results) => {
+      console.log('SAMPLES', results);
+      AsyncStorage.getItem('isVegan').then(value =>
+        console.log('isVegan', value),
+      );
+    });
   }
 
   asyncUsernameFetch() {
@@ -148,6 +172,28 @@ class ActivityView extends React.Component {
       greeting = 'Hello there, ' + this.state.username + '!';
     }
 
+    const screenWidth = Dimensions.get('window').width;
+
+    const chartConfig = {
+      backgroundGradientFrom: '#1E2923',
+      backgroundGradientFromOpacity: 0,
+      backgroundGradientTo: '#08130D',
+      backgroundGradientToOpacity: 0.5,
+      color: (opacity = 1) => `rgba(1, 1, 146, ${opacity})`,
+      strokeWidth: 2, // optional, default 3
+      barPercentage: 0.5,
+    };
+
+    const data = {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+      datasets: [
+        {
+          data: [20, 45, 28, 80, 99, 43],
+          strokeWidth: 2, // optional
+        },
+      ],
+    };
+
     return (
       <React.Fragment>
         <FetchUsername getUsername={this.asyncUsernameFetch} />
@@ -161,8 +207,22 @@ class ActivityView extends React.Component {
             alignItems: 'center',
           }}>
           <Text style={{fontSize: 24, fontWeight: 'bold'}}>{greeting}</Text>
+          <Text></Text>
           <Button title="Step count" onPress={this.printSteps} />
           {stepText}
+        </View>
+        <View>
+          <Text>Last 7 days of activity</Text>
+          <LineChart
+            data={data}
+            width={screenWidth} // from react-native
+            height={220}
+            chartConfig={chartConfig}
+            bezier
+            style={{
+              borderRadius: 16,
+            }}
+          />
         </View>
       </React.Fragment>
     );
@@ -250,6 +310,9 @@ class ProfileView extends React.Component {
     height: '',
     weight: '',
     age: '',
+    isVegan: false,
+    isVegetarian: false,
+    isLactoseIntolerant: false,
   };
 
   handleUsernameChange(inputText) {
@@ -344,11 +407,36 @@ class ProfileView extends React.Component {
       console.log('age is...', value);
       this.setState({age: value});
     });
+
+    AsyncStorage.getItem('isVegan').then(value => {
+      console.log('isVegan...', value);
+      if (value === 'true') {
+        this.setState({isVegan: true});
+      } else {
+        this.setState({isVegan: false});
+      }
+    });
+
+    AsyncStorage.getItem('isVegetarian').then(value => {
+      console.log('isVegatarian...', value);
+      if (value === 'true') {
+        this.setState({isVegetarian: true});
+      } else {
+        this.setState({isVegetarian: false});
+      }
+    });
+
+    AsyncStorage.getItem('isLactoseIntolerant').then(value => {
+      console.log('isLactoseIntolerant...', value);
+      if (value === 'true') {
+        this.setState({isLactoseIntolerant: true});
+      } else {
+        this.setState({isLactoseIntolerant: false});
+      }
+    });
   }
 
   render() {
-    // KeyboardAvoidingView moves the screen up when a keyboard is opened
-
     let emptyProfile = (
       <React.Fragment>
         <Card title="New user">
@@ -365,6 +453,9 @@ class ProfileView extends React.Component {
         height={this.state.height}
         weight={this.state.weight}
         age={this.state.age}
+        isVegan={this.state.isVegan}
+        isLactoseIntolerant={this.state.isLactoseIntolerant}
+        isVegetarian={this.state.isVegetarian}
       />
     );
 
@@ -437,15 +528,61 @@ class ProfileView extends React.Component {
           <View>
             <ListItem
               title="Vegan?"
-              switch
-              onChange={() => console.log('Switched')}
               bottomDivider
+              rightElement={() => {
+                return (
+                  <Switch
+                    value={this.state.isVegan}
+                    onValueChange={() => {
+                      AsyncStorage.setItem(
+                        'isVegan',
+                        JSON.stringify(!this.state.isVegan),
+                      );
+                      this.setState({isVegan: !this.state.isVegan});
+                    }}
+                  />
+                );
+              }}
             />
+
             <ListItem
               title="Vegetarian?"
-              switch
-              onChange={() => console.log('Switched')}
               bottomDivider
+              rightElement={() => {
+                return (
+                  <Switch
+                    value={this.state.isVegetarian}
+                    onValueChange={() => {
+                      AsyncStorage.setItem(
+                        'isVegetarian',
+                        JSON.stringify(!this.state.isVegetarian),
+                      );
+
+                      this.setState({isVegetarian: !this.state.isVegetarian});
+                    }}
+                  />
+                );
+              }}
+            />
+            <ListItem
+              title="Lactose intolerant?"
+              bottomDivider
+              rightElement={() => {
+                return (
+                  <Switch
+                    value={this.state.isLactoseIntolerant}
+                    onValueChange={() => {
+                      AsyncStorage.setItem(
+                        'isLactoseIntolerant',
+                        JSON.stringify(!this.state.isLactoseIntolerant),
+                      );
+                      this.setState({
+                        isLactoseIntolerant: !this.state.isLactoseIntolerant,
+                      });
+                    }}
+                  />
+                );
+              }}
             />
           </View>
         </KeyboardAwareScrollView>
@@ -484,12 +621,12 @@ class ProfileCard extends React.Component {
   }
 
   render() {
-    let bmi = '\nEnter your height and weight to calculate BMi';
+    let bmi = 'Enter height and weight';
     if (this.props.height && this.props.weight) {
       bmi = this.calculateBMI(this.props.height, this.props.weight);
     }
 
-    let calories = '\nEnter gender and age to approximate calorie intake';
+    let calories = 'Enter age'; //Enter gender and age
     if (this.props.height && this.props.weight && this.props.age) {
       calories = this.harrisBenedictMale(
         this.props.height,
@@ -502,17 +639,17 @@ class ProfileCard extends React.Component {
       <React.Fragment>
         <Card title={this.props.username}>
           <Text style={{fontSize: 18, paddingBottom: 4}}>
-            Age: {this.props.age} years
+            Age: {this.props.age}
           </Text>
           <Text style={{fontSize: 18, paddingBottom: 4}}>
-            Height: {this.props.height} inches
+            Height: {this.props.height}
           </Text>
           <Text style={{fontSize: 18, paddingBottom: 4}}>
-            Weight: {this.props.weight} lbs
+            Weight: {this.props.weight}
           </Text>
           <Text style={{fontSize: 18, paddingBottom: 4}}>BMI: {bmi}</Text>
           <Text style={{fontSize: 18, paddingBottom: 4}}>
-            Daily recommendation: {calories} cals
+            Daily calories: {calories}
           </Text>
         </Card>
       </React.Fragment>
@@ -530,11 +667,11 @@ class ProfileInput extends React.Component {
     return (
       <View
         style={{
-          flex: 5,
+          flex: 4,
           flexDirection: 'row',
           paddingBottom: 24,
         }}>
-        <View style={{flex: 4}}>
+        <View style={{flex: 5}}>
           <Input
             placeholder={this.props.placeholder}
             onChangeText={this.props.handleChangeFunction}
@@ -549,7 +686,7 @@ class ProfileInput extends React.Component {
             paddingRight: 8,
           }}>
           <RneButton
-            type="outline"
+            type="solid"
             title="Submit"
             onPress={this.props.saveFunction}>
             Submit
