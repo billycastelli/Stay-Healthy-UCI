@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
 });
 
 import AppleHealthKit from 'rn-apple-healthkit';
-// import {TextInput} from 'react-native-gesture-handler';
 
 let options = {
   permissions: {
@@ -128,29 +127,37 @@ class ActivityView extends React.Component {
     todaySteps: null,
     username: '',
     caloriesBurned: null,
+    step_counts: [],
   };
 
   printSteps() {
-    AppleHealthKit.getStepCount(null, (err, results) => {
-      console.log('RESULTS', results);
-      this.setState({todaySteps: results}, () => {
-        console.log('RESULTS FROM STATE', this.state.todaySteps);
-      });
-    });
+    // AppleHealthKit.getStepCount(null, (err, results) => {
+    //   console.log('RESULTS', results);
+    //   this.setState({todaySteps: results}, () => {
+    //     console.log('RESULTS FROM STATE', this.state.todaySteps);
+    //   });
+    // });
 
-    var old_date = new Date();
-    old_date.setDate(old_date.getDate() - 7);
+    this.setState({step_counts: []}, () => {
+      console.log('STEP COUNTS BEFORE', this.state.step_counts);
+      for (let day = 0; day < 7; day++) {
+        var d = new Date();
+        d.setDate(d.getDate() - day);
 
-    let options = {
-      startDate: new Date(2020, 3, 1).toISOString(), // required
-      endDate: new Date().toISOString(), // optional; default now
-    };
-    AppleHealthKit.getDailyStepCountSamples(options, (err, results) => {
-      console.log('SAMPLES', results);
-      AsyncStorage.getItem('isVegan').then(value =>
-        console.log('isVegan', value),
-      );
+        let options = {date: new Date(d).toISOString()};
+        AppleHealthKit.getStepCount(options, (err, steps) => {
+          if (err) {
+            console.log('error:', err);
+          }
+          let sc = this.state.step_counts;
+          sc.push(steps);
+          this.setState({step_counts: sc});
+        });
+      }
     });
+    for (let i = 0; i < this.state.step_counts.length; i++) {
+      console.log(this.state.step_counts[i]);
+    }
   }
 
   asyncUsernameFetch() {
@@ -171,18 +178,6 @@ class ActivityView extends React.Component {
     if (this.state.username) {
       greeting = 'Hello there, ' + this.state.username + '!';
     }
-
-    const screenWidth = Dimensions.get('window').width;
-
-    const chartConfig = {
-      backgroundGradientFrom: '#1E2923',
-      backgroundGradientFromOpacity: 0,
-      backgroundGradientTo: '#08130D',
-      backgroundGradientToOpacity: 0.5,
-      color: (opacity = 1) => `rgba(1, 1, 146, ${opacity})`,
-      strokeWidth: 2, // optional, default 3
-      barPercentage: 0.5,
-    };
 
     const data = {
       labels: ['January', 'February', 'March', 'April', 'May', 'June'],
@@ -212,18 +207,41 @@ class ActivityView extends React.Component {
           {stepText}
         </View>
         <View>
-          <Text>Last 7 days of activity</Text>
-          <LineChart
-            data={data}
-            width={screenWidth} // from react-native
-            height={220}
-            chartConfig={chartConfig}
-            bezier
-            style={{
-              borderRadius: 16,
-            }}
-          />
+          <ActivityChart data={data} />
         </View>
+      </React.Fragment>
+    );
+  }
+}
+
+class ActivityChart extends React.Component {
+  render() {
+    const screenWidth = Dimensions.get('window').width;
+
+    const chartConfig = {
+      backgroundGradientFrom: '#1E2923',
+      backgroundGradientFromOpacity: 0,
+      backgroundGradientTo: '#08130D',
+      backgroundGradientToOpacity: 0.5,
+      color: (opacity = 1) => `rgba(1, 1, 146, ${opacity})`,
+      strokeWidth: 2, // optional, default 3
+      barPercentage: 0.5,
+    };
+    return (
+      <React.Fragment>
+        <Text style={{fontSize: 14, fontWeight: 'bold', textAlign: 'center'}}>
+          Last 7 days of activity
+        </Text>
+        <LineChart
+          data={this.props.data}
+          width={screenWidth} // from react-native
+          height={220}
+          chartConfig={chartConfig}
+          bezier
+          style={{
+            borderRadius: 16,
+          }}
+        />
       </React.Fragment>
     );
   }
