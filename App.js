@@ -119,7 +119,7 @@ class ActivityView extends React.Component {
 
   constructor(props) {
     super(props);
-    this.printSteps = this.printSteps.bind(this);
+    this.calculateSteps = this.calculateSteps.bind(this);
     this.asyncUsernameFetch = this.asyncUsernameFetch.bind(this);
   }
 
@@ -130,16 +130,8 @@ class ActivityView extends React.Component {
     step_counts: [],
   };
 
-  printSteps() {
-    // AppleHealthKit.getStepCount(null, (err, results) => {
-    //   console.log('RESULTS', results);
-    //   this.setState({todaySteps: results}, () => {
-    //     console.log('RESULTS FROM STATE', this.state.todaySteps);
-    //   });
-    // });
-
+  calculateSteps() {
     this.setState({step_counts: []}, () => {
-      console.log('STEP COUNTS BEFORE', this.state.step_counts);
       for (let day = 0; day < 7; day++) {
         var d = new Date();
         d.setDate(d.getDate() - day);
@@ -149,19 +141,16 @@ class ActivityView extends React.Component {
           if (err) {
             console.log('error:', err);
           }
-          let sc = this.state.step_counts;
-          sc.push(steps);
-          this.setState({step_counts: sc});
+          const {step_counts} = this.state;
+          this.setState({step_counts: step_counts.concat([steps])});
         });
       }
     });
-    for (let i = 0; i < this.state.step_counts.length; i++) {
-      console.log(this.state.step_counts[i]);
-    }
   }
 
   asyncUsernameFetch() {
-    console.log('Passed function');
+    this.calculateSteps();
+    console.log(this.state.step_counts);
     AsyncStorage.getItem('username').then(value => {
       console.log('username is...', value);
       this.setState({username: value});
@@ -179,15 +168,24 @@ class ActivityView extends React.Component {
       greeting = 'Hello there, ' + this.state.username + '!';
     }
 
-    const data = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-      datasets: [
-        {
-          data: [20, 45, 28, 80, 99, 43],
-          strokeWidth: 2, // optional
-        },
-      ],
-    };
+    let chart = null;
+    if (this.state.step_counts && this.state.step_counts.length > 0) {
+      console.log('Should print chart...');
+      cleaned_data = this.state.step_counts
+        .map(d => ({date: d.startDate.slice(5, 10), value: d.value}))
+        .sort((a, b) => a.date > b.date);
+      console.log(cleaned_data);
+      const data = {
+        labels: cleaned_data.map(d => d.date),
+        datasets: [
+          {
+            data: cleaned_data.map(d => d.value),
+            strokeWidth: 2, // optional
+          },
+        ],
+      };
+      chart = <ActivityChart data={data} />;
+    }
 
     return (
       <React.Fragment>
@@ -206,9 +204,7 @@ class ActivityView extends React.Component {
           <Button title="Step count" onPress={this.printSteps} />
           {stepText}
         </View>
-        <View>
-          <ActivityChart data={data} />
-        </View>
+        <View>{chart}</View>
       </React.Fragment>
     );
   }
@@ -240,6 +236,7 @@ class ActivityChart extends React.Component {
           bezier
           style={{
             borderRadius: 16,
+            paddingLeft: 10,
           }}
         />
       </React.Fragment>
