@@ -234,6 +234,7 @@ class ActivityChart extends React.Component {
           height={220}
           chartConfig={chartConfig}
           bezier
+          fromZero
           style={{
             borderRadius: 16,
             paddingLeft: 10,
