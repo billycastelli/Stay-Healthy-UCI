@@ -346,11 +346,12 @@ class ProfileView extends React.Component {
 
 const Tab = createBottomTabNavigator();
 class App extends React.Component {
-  addDiaryEntry = (food, date = null) => {
+  addDiaryEntry = (food, date) => {
     if (!date) {
       date = new Date();
-      date = date.toISOString();
-      date = date.slice(0, date.indexOf('T'));
+      // date = date.toISOString();
+      // date = date.slice(0, date.indexOf('T'));
+      date = date.toDateString();
     }
     const updateDiary = async () => {
       try {

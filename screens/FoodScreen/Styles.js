@@ -14,6 +14,7 @@ export const NearbyMeal = styled.View`
 export const MealName = styled.Text`
   font-weight: 800;
   font-size: 20px;
+  margin-bottom: 5px;
 `;
 
 export const MealOrigin = styled.Text``;
@@ -26,9 +27,12 @@ export const ScreenTitle = styled.Text`
 
 export const TouchableMealListing = styled.TouchableOpacity`
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-  background-color: powderblue;
+  border-radius: 10px;
+  background-color: white;
   margin-bottom: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 5px 5px;
 `;
 
 export const AddMealTouchable = styled.TouchableOpacity`
@@ -55,3 +59,5 @@ export const MealListingDesc = styled.Text`
   font-size: 20px;
   margin-bottom: 5px;
 `;
+
+export const DatePickerContainer = styled.View``;
