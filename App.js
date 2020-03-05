@@ -9,7 +9,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
@@ -24,6 +23,7 @@ import {
 
 import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from '@react-native-community/geolocation';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import {
   Header,
@@ -34,16 +34,12 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import {useFocusEffect} from '@react-navigation/native';
 
-import {
-  NearbyMeal,
-  MealName,
-  MealOrigin,
-  TouchableMealListing,
-  ScreenTitle,
-  ScreenContainer,
-} from './Styles.js';
+import FoodScreen from './screens/FoodScreen';
+import DiaryScreen from './screens/DiaryScreen';
+import AppContext from './AppContext';
 
 const styles = StyleSheet.create({
   header: {
@@ -161,51 +157,6 @@ class TabHeader extends React.Component {
         <Text style={{color: 'white', fontSize: 24, textAlign: 'center'}}>
           {this.props.headerText}
         </Text>
-      </View>
-    );
-  }
-}
-
-class NearbyMealItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <TouchableMealListing onPress={this.props.onPress}>
-        <NearbyMeal>
-          <MealName>{this.props.name}</MealName>
-          <MealOrigin>
-            {this.props.location} • {this.props.distance} •{' '}
-            {this.props.priceRange}
-          </MealOrigin>
-        </NearbyMeal>
-      </TouchableMealListing>
-    );
-  }
-}
-
-class FoodView extends React.Component {
-  // This screen will use the users height, weight, age, etc to send
-  // a request to our database and will receive and display food recommendations
-
-  render() {
-    Geolocation.getCurrentPosition(info => console.log(info));
-
-    return (
-      <View style={{flex: 1, paddingTop: 40}}>
-        <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
-        <ScreenContainer>
-          <ScreenTitle>Next meal: Lunch</ScreenTitle>
-          <NearbyMealItem
-            name="French Toast"
-            location="Ruby's Diner"
-            distance="0.8mi"
-            priceRange="$"
-            onPress={() => console.log('pressed meal item')}
-          />
-        </ScreenContainer>
       </View>
     );
   }
@@ -395,16 +346,56 @@ class ProfileView extends React.Component {
 
 const Tab = createBottomTabNavigator();
 class App extends React.Component {
+  addDiaryEntry = (food, date) => {
+    if (!date) {
+      date = new Date();
+      // date = date.toISOString();
+      // date = date.slice(0, date.indexOf('T'));
+      date = date.toDateString();
+    }
+    const updateDiary = async () => {
+      try {
+        // await AsyncStorage.setItem('diary', 'my secret value');
+        const diaryJSON = await AsyncStorage.getItem('diary');
+        let diary = JSON.parse(diaryJSON);
+        if (!diary) diary = [];
+        const entry = diary.filter(obj => obj.id === date);
+        if (entry.length < 1) {
+          diary.push({
+            id: date,
+            log: [food],
+          });
+        } else {
+          entry[0].log.push(food);
+        }
+        await AsyncStorage.setItem('diary', JSON.stringify(diary));
+        console.log('================ updated diary:', diary);
+      } catch (e) {
+        // save error
+        console.error(e);
+      }
+    };
+
+    updateDiary();
+  };
   // Handles switching between tabs
   // Each tab is a component
   render() {
     return (
       <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Activity" component={ActivityView} />
-          <Tab.Screen name="Food" component={FoodView} />
-          <Tab.Screen name="Profile" component={ProfileView} />
-        </Tab.Navigator>
+        <AppContext.Provider
+          value={{
+            addDiaryEntry: this.addDiaryEntry,
+          }}>
+          <Tab.Navigator>
+            <Tab.Screen name="Activity" component={ActivityView} />
+            {/*<Tab.Screen name="Food" component={FoodView} />*/}
+            <Tab.Screen name="Food" component={FoodScreen} />
+
+            <Tab.Screen name="Profile" component={ProfileView} />
+            <Tab.Screen name="Diary" component={DiaryScreen} />
+          </Tab.Navigator>
+        </AppContext.Provider>
       </NavigationContainer>
     );
   }
