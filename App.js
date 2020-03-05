@@ -142,7 +142,9 @@ class ActivityView extends React.Component {
             console.log('error:', err);
           }
           const {step_counts} = this.state;
-          this.setState({step_counts: step_counts.concat([steps])});
+          if (steps) {
+            this.setState({step_counts: step_counts.concat([steps])});
+          }
         });
       }
     });
@@ -171,7 +173,8 @@ class ActivityView extends React.Component {
     let chart = null;
     if (this.state.step_counts && this.state.step_counts.length > 0) {
       console.log('Should print chart...');
-      cleaned_data = this.state.step_counts
+      console.log('INSIDE: COUNTS', this.state.step_counts);
+      let cleaned_data = this.state.step_counts
         .map(d => ({date: d.startDate.slice(5, 10), value: d.value}))
         .sort((a, b) => a.date > b.date);
       console.log(cleaned_data);
