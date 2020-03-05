@@ -77,7 +77,7 @@ const FoodStack = createStackNavigator();
 const FoodView = props => {
   // This screen will use the users height, weight, age, etc to send
   // a request to our database and will receive and display food recommendations
-  const places = placesJson.places;
+  const allPlaces = placesJson.places;
   // const [curPosition, setCurPosition] = useState({});
   // const [firstDistance, setFirstDistance] = useState('-0.0mi');
   const d = new Date();
@@ -89,11 +89,22 @@ const FoodView = props => {
   // setFirstDistance(`${calcDistance(info.coords, firstPlace.Location)}mi`),
   // );
   // }, [firstPlace.Location]);
+  const calRange = [0, 400];
+  const places = allPlaces.map(place => {
+    place.Menu = place.Menu.filter(
+      meal =>
+        meal.tags.includes(whichMeal) &&
+        meal.calories < calRange[1] &&
+        meal.calories > calRange[0],
+    );
+    return place;
+  });
 
   return (
     <View style={{flex: 1, paddingTop: 40}}>
       <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
-      <ScreenTitle>Next meal: Lunch</ScreenTitle>
+      <ScreenTitle>Next meal: {whichMeal}</ScreenTitle>
+      {/*
       <FlatList
         data={places}
         renderItem={({item}) => (
@@ -116,6 +127,34 @@ const FoodView = props => {
             }
           />
         )}
+        keyExtractor={item => item.name}
+      />
+	  */}
+      <FlatList
+        data={places}
+        renderItem={({item}) =>
+          item.Menu[0] &&
+          item.Menu.map(meal => (
+            <NearbyMealItem
+              key={item.name + meal.item}
+              name={meal.item}
+              priceRange={`$${meal.price}`}
+              distance={''}
+              location={item.name}
+              calories={meal.calories}
+              onPress={() =>
+                props.navigation.navigate('MealInfoModal', {
+                  name: meal.item,
+                  location: item.name,
+                  priceRange: `$${meal.price}`,
+                  description: meal.description,
+                  tags: meal.tags,
+                  calories: meal.calories,
+                })
+              }
+            />
+          ))
+        }
         keyExtractor={item => item.name}
       />
     </View>
