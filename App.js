@@ -167,8 +167,8 @@ class ActivityView extends React.Component {
     let chart = null;
     if (this.state.step_counts && this.state.step_counts.length > 0) {
       console.log('Should print chart...');
-      cleaned_data = this.state.step_counts
-        .map(d => ({date: d.startDate.slice(5, 10), value: d.value}))
+      let cleaned_data = this.state.step_counts
+        .map(d => d && {date: d.startDate.slice(5, 10), value: d.value})
         .sort((a, b) => a.date > b.date);
       console.log(cleaned_data);
       const data = {
@@ -196,7 +196,7 @@ class ActivityView extends React.Component {
             alignItems: 'center',
           }}>
           <Text style={{fontSize: 24, fontWeight: 'bold'}}>{greeting}</Text>
-          <Text></Text>
+          <Text />
           <Button title="Step count" onPress={this.printSteps} />
           {stepText}
         </View>
@@ -707,32 +707,32 @@ class App extends React.Component {
           value={{
             addDiaryEntry: this.addDiaryEntry,
           }}>
-        <Tab.Navigator
-          screenOptions={({route}) => ({
-            tabBarIcon: ({focused, color, size}) => {
-              let iconName;
+          <Tab.Navigator
+            screenOptions={({route}) => ({
+              tabBarIcon: ({focused, color, size}) => {
+                let iconName;
 
-              if (route.name === 'Activity') {
-                iconName = 'child';
-              } else if (route.name === 'Food') {
-                iconName = 'spoon';
-              } else if (route.name === 'Profile') {
-                iconName = 'user-circle-o';
-              }
+                if (route.name === 'Activity') {
+                  iconName = 'child';
+                } else if (route.name === 'Food') {
+                  iconName = 'spoon';
+                } else if (route.name === 'Profile') {
+                  iconName = 'user-circle-o';
+                }
 
-              // You can return any component that you like here!
-              return <Icon name={iconName} size={25} color="grey" />;
-            },
-          })}
-          tabBarOptions={{
-            activeTintColor: 'tomato',
-            inactiveTintColor: 'gray',
-          }}>
-			  <Tab.Screen name="Activity" component={ActivityView} />
-			  <Tab.Screen name="Food" component={FoodScreen} />
-			  <Tab.Screen name="Profile" component={ProfileView} />
-			  <Tab.Screen name="Diary" component={DiaryScreen} />
-        </Tab.Navigator>
+                // You can return any component that you like here!
+                return <Icon name={iconName} size={25} color="grey" />;
+              },
+            })}
+            tabBarOptions={{
+              activeTintColor: 'tomato',
+              inactiveTintColor: 'gray',
+            }}>
+            <Tab.Screen name="Activity" component={ActivityView} />
+            <Tab.Screen name="Food" component={FoodScreen} />
+            <Tab.Screen name="Profile" component={ProfileView} />
+            <Tab.Screen name="Diary" component={DiaryScreen} />
+          </Tab.Navigator>
         </AppContext.Provider>
       </NavigationContainer>
     );
