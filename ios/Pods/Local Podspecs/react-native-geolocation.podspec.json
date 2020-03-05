@@ -3,9 +3,7 @@
   "version": "2.0.2",
   "summary": "React Native Geolocation Module for iOS and Android",
   "license": "MIT",
-  "authors": {
-    "name": "React Native Community"
-  },
+  "authors": "React Native Community",
   "homepage": "https://github.com/react-native-community/react-native-geolocation#README.md",
   "platforms": {
     "ios": "9.0"
