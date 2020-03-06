@@ -88,15 +88,15 @@ AppleHealthKit.initHealthKit(options, (err, results) => {
   }
 });
 
-function FetchUsername(props) {
-  const {getUsername} = props;
+function FetchComponent(props) {
+  const {focusFunction} = props;
   // For switching tabs, this code runs when the screen is "in focus"
   // Could probably be used to retrive the persistent name/height/weight data
   useFocusEffect(
     React.useCallback(() => {
       {
         console.log('In focus');
-        getUsername();
+        focusFunction();
       }
       return () => {
         console.log('Out of focus');
@@ -115,18 +115,33 @@ class ActivityView extends React.Component {
 
   constructor(props) {
     super(props);
-    this.calculateSteps = this.calculateSteps.bind(this);
-    this.asyncUsernameFetch = this.asyncUsernameFetch.bind(this);
+    this.getTodaySteps = this.getTodaySteps.bind(this);
+    this.getWeeklySteps = this.getWeeklySteps.bind(this);
+    this.getWeeklyWalking = this.getWeeklyWalking.bind(this);
+    this.focusFetch = this.focusFetch.bind(this);
   }
 
   state = {
     todaySteps: null,
-    username: '',
-    caloriesBurned: null,
+    username: null,
+    weight: null,
     step_counts: [],
+    walk_counts: [],
   };
 
-  calculateSteps() {
+  getTodaySteps() {
+    let options = {date: new Date().toISOString()};
+    AppleHealthKit.getStepCount(options, (err, steps) => {
+      if (err) {
+        console.log('error:', err);
+      }
+      if (steps) {
+        this.state.todaySteps = steps.value.toFixed(0);
+      }
+    });
+  }
+
+  getWeeklySteps() {
     this.setState({step_counts: []}, () => {
       for (let day = 0; day < 7; day++) {
         var d = new Date();
@@ -138,54 +153,106 @@ class ActivityView extends React.Component {
             console.log('error:', err);
           }
           const {step_counts} = this.state;
-          this.setState({step_counts: step_counts.concat([steps])});
+          if (steps) {
+            this.setState({step_counts: step_counts.concat([steps])});
+          }
         });
       }
     });
   }
 
-  asyncUsernameFetch() {
-    this.calculateSteps();
-    console.log(this.state.step_counts);
+  getWeeklyWalking() {
+    this.setState({walk_counts: []}, () => {
+      for (let day = 0; day < 7; day++) {
+        var d = new Date();
+        d.setDate(d.getDate() - day);
+
+        let options = {date: new Date(d).toISOString(), unit: 'mile'};
+        AppleHealthKit.getDistanceWalkingRunning(options, (err, today) => {
+          if (err) {
+            console.log('error:', err);
+          }
+          const {walk_counts} = this.state;
+          if (today) {
+            this.setState({walk_counts: walk_counts.concat([today])});
+          }
+        });
+      }
+    });
+  }
+
+  generateChart(source, title) {
+    let cleaned_data = source
+      .map(d => d && {date: d.startDate.slice(5, 10), value: d.value})
+      .sort((a, b) => a.date > b.date);
+    const data = {
+      labels: cleaned_data.map(d => d.date),
+      datasets: [
+        {
+          data: cleaned_data.map(d => d.value),
+          strokeWidth: 2, // optional
+        },
+      ],
+    };
+    return <LineActivityChart data={data} title={title} />;
+  }
+
+  focusFetch() {
+    this.getTodaySteps();
+    this.getWeeklySteps();
+    this.getWeeklyWalking();
     AsyncStorage.getItem('username').then(value => {
       console.log('username is...', value);
       this.setState({username: value});
     });
+    AsyncStorage.getItem('weight').then(value => {
+      console.log('weight is...', value);
+      this.setState({weight: value});
+    });
   }
 
   render() {
-    let stepText = null;
-    if (this.state.todaySteps) {
-      stepText = <Text>Today's steps: {this.state.todaySteps.value}</Text>;
-    }
-
     let greeting = 'Hello there!';
     if (this.state.username) {
       greeting = 'Hello there, ' + this.state.username + '!';
     }
 
-    let chart = null;
+    let step_chart = null;
+    let total_steps = null;
+    let avg_steps = null;
     if (this.state.step_counts && this.state.step_counts.length > 0) {
-      console.log('Should print chart...');
-      let cleaned_data = this.state.step_counts
-        .map(d => d && {date: d.startDate.slice(5, 10), value: d.value})
-        .sort((a, b) => a.date > b.date);
-      console.log(cleaned_data);
-      const data = {
-        labels: cleaned_data.map(d => d.date),
-        datasets: [
-          {
-            data: cleaned_data.map(d => d.value),
-            strokeWidth: 2, // optional
-          },
-        ],
-      };
-      chart = <ActivityChart data={data} />;
+      step_chart = this.generateChart(
+        this.state.step_counts,
+        (title = 'Steps'),
+      );
+      total_steps = 0;
+      for (var day = 0; day < this.state.step_counts.length; day++) {
+        total_steps += this.state.step_counts[day].value;
+      }
+      avg_steps = (total_steps / this.state.step_counts.length).toFixed(0);
     }
 
+    let walking_chart = null;
+    let total_miles = null;
+    let avg_miles = null;
+    if (this.state.walk_counts && this.state.walk_counts.length > 0) {
+      walking_chart = this.generateChart(
+        this.state.walk_counts,
+        (title = 'Walking + Running distance'),
+      );
+      for (var day = 0; day < this.state.walk_counts.length; day++) {
+        total_miles += this.state.walk_counts[day].value;
+      }
+      avg_miles = total_miles / this.state.step_counts.length;
+    }
+
+    let avg_calories = null;
+    if (this.state.weight) {
+      avg_calories = (this.state.weight * 0.57 * avg_miles).toFixed(0);
+    }
     return (
-      <React.Fragment>
-        <FetchUsername getUsername={this.asyncUsernameFetch} />
+      <ScrollView>
+        <FetchComponent focusFunction={this.focusFetch} />
         <View style={{flex: 1, paddingTop: 40}}>
           <TabHeader headerText="Activity analyzer" bgColor="#6c8672" />
         </View>
@@ -195,18 +262,21 @@ class ActivityView extends React.Component {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{fontSize: 24, fontWeight: 'bold'}}>{greeting}</Text>
-          <Text />
-          <Button title="Step count" onPress={this.printSteps} />
-          {stepText}
+          <Text style={{fontSize: 24, fontWeight: 'bold', padding: 20}}>
+            {greeting}
+          </Text>
+          <Text>Today's steps: {this.state.todaySteps}</Text>
+          <Text>Average steps this week: {avg_steps}</Text>
+          <Text>Average daily calorie burn: {avg_calories}</Text>
         </View>
-        <View>{chart}</View>
-      </React.Fragment>
+        <View>{step_chart}</View>
+        <View>{walking_chart}</View>
+      </ScrollView>
     );
   }
 }
 
-class ActivityChart extends React.Component {
+class LineActivityChart extends React.Component {
   render() {
     const screenWidth = Dimensions.get('window').width;
 
@@ -221,8 +291,14 @@ class ActivityChart extends React.Component {
     };
     return (
       <React.Fragment>
-        <Text style={{fontSize: 14, fontWeight: 'bold', textAlign: 'center'}}>
-          Last 7 days of activity
+        <Text
+          style={{
+            fontSize: 14,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            paddingTop: 8,
+          }}>
+          {this.props.title}
         </Text>
         <LineChart
           data={this.props.data}
@@ -232,7 +308,7 @@ class ActivityChart extends React.Component {
           bezier
           fromZero
           style={{
-            borderRadius: 16,
+            borderRadius: 10,
             paddingLeft: 10,
           }}
         />
