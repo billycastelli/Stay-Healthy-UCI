@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Geolocation from '@react-native-community/geolocation';
 import AppContext from '../../AppContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {Text, View, ScrollView, FlatList} from 'react-native';
 
@@ -80,6 +81,9 @@ const FoodView = props => {
   const allPlaces = placesJson.places;
   // const [curPosition, setCurPosition] = useState({});
   // const [firstDistance, setFirstDistance] = useState('-0.0mi');
+  const [isVegan, setIsVegan] = useState(false);
+  const [isVegetarian, setIsVegetarian] = useState(false);
+  const [places, setPlaces] = useState([]);
   const d = new Date();
   const whichMeal =
     d.getHours() < 11 ? 'breakfast' : d.getHours() < 16 ? 'lunch' : 'dinner';
@@ -89,47 +93,37 @@ const FoodView = props => {
   // setFirstDistance(`${calcDistance(info.coords, firstPlace.Location)}mi`),
   // );
   // }, [firstPlace.Location]);
-  const calRange = [0, 400];
-  const places = allPlaces.map(place => {
-    place.Menu = place.Menu.filter(
-      meal =>
-        meal.tags.includes(whichMeal) &&
-        meal.calories < calRange[1] &&
-        meal.calories > calRange[0],
+  useEffect(() => {
+    const setVeg = async () => {
+      const vegeRes = await AsyncStorage.getItem('isVegetarian');
+      if (vegeRes) setIsVegetarian(vegeRes === 'true');
+      const veganRes = await AsyncStorage.getItem('isVegan');
+      if (veganRes) setIsVegan(veganRes === 'true');
+    };
+    setVeg();
+  }, []);
+
+  useEffect(() => {
+    const calRange = [0, 400];
+    setPlaces(
+      allPlaces.map(place => {
+        place.Menu = place.Menu.filter(
+          meal =>
+            meal.tags.includes(whichMeal) &&
+            meal.calories < calRange[1] &&
+            meal.calories > calRange[0] &&
+            (isVegan ? meal.tags.includes('vegan') : true) &&
+            (isVegetarian ? meal.tags.includes('vegetarian') : true),
+        );
+        return place;
+      }),
     );
-    return place;
-  });
+  }, [allPlaces, isVegan, isVegetarian, whichMeal]);
 
   return (
     <View style={{flex: 1, paddingTop: 40}}>
       <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
       <ScreenTitle>Next meal: {whichMeal}</ScreenTitle>
-      {/*
-      <FlatList
-        data={places}
-        renderItem={({item}) => (
-          <NearbyMealItem
-            key={item.name + item.Menu[0].item}
-            name={item.Menu[0].item}
-            priceRange={`$${item.Menu[0].price}`}
-            distance={''}
-            location={item.name}
-            calories={item.Menu[0].calories}
-            onPress={() =>
-              props.navigation.navigate('MealInfoModal', {
-                name: item.Menu[0].item,
-                location: item.name,
-                priceRange: `$${item.Menu[0].price}`,
-                description: item.Menu[0].description,
-                tags: item.Menu[0].tags,
-                calories: item.Menu[0].calories,
-              })
-            }
-          />
-        )}
-        keyExtractor={item => item.name}
-      />
-	  */}
       <FlatList
         data={places}
         renderItem={({item}) =>
