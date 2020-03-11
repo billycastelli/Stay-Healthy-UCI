@@ -6,6 +6,8 @@
  * @flow
  */
 
+import ModalDropdown from 'react-native-modal-dropdown';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   LineChart,
@@ -44,6 +46,7 @@ import {
   TextInput,
   Switch,
   Dimensions,
+  Picker,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -562,6 +565,53 @@ class ProfileView extends React.Component {
             style={{
               fontSize: 18,
               fontWeight: 'bold',
+              paddingLeft: 9,
+              paddingBottom: 8,
+            }}>
+            Goals
+          </Text>
+
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              backgroundColor: 'white',
+              padding: 8,
+            }}>
+            <Text
+              style={{flex: 2, fontSize: 18, paddingLeft: 6, paddingTop: 8}}>
+              Weight goals
+            </Text>
+            <ModalDropdown
+              defaultValue={'Select goal'}
+              dropdownTextStyle={{fontSize: 20, paddingLeft: 10}}
+              textStyle={{
+                marginVertical: 10,
+                marginHorizontal: 6,
+                fontSize: 18,
+                color: 'white',
+                textAlign: 'center',
+                textAlignVertical: 'center',
+              }}
+              style={{
+                width: 150,
+                right: 8,
+                borderWidth: 0,
+                borderRadius: 3,
+                backgroundColor: 'cornflowerblue',
+              }}
+              onSelect={(index, value) => {
+                console.log(value);
+                AsyncStorage.setItem('weightGoal', value);
+              }}
+              options={['Gain weight', 'Lose weight', 'Maintain weight']}
+            />
+          </View>
+
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
               paddingTop: 6,
               paddingLeft: 9,
               paddingBottom: 8,
@@ -730,11 +780,10 @@ class ProfileInput extends React.Component {
             paddingRight: 8,
           }}>
           <RneButton
+            buttonStyle={{backgroundColor: 'cornflowerblue'}}
             type="solid"
             title="Submit"
-            onPress={this.props.saveFunction}>
-            Submit
-          </RneButton>
+            onPress={this.props.saveFunction}></RneButton>
         </View>
       </View>
     );
