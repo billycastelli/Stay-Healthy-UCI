@@ -676,6 +676,7 @@ class ProfileCard extends React.Component {
         this.props.weight,
         this.props.age,
       );
+      AsyncStorage.setItem('dailyCalories', calories);
     }
 
     return (
