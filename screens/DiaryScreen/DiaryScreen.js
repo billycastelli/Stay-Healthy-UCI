@@ -63,7 +63,9 @@ const EntryPreview = props => {
   return (
     <TouchableEntryPreview onPress={props.onPress}>
       <Text>{props.id}</Text>
-      <Text>{props.log.length} entries</Text>
+      <Text>
+        {props.log.length} {props.log.length > 1 ? 'entries' : 'entry'}
+      </Text>
     </TouchableEntryPreview>
   );
 };
@@ -107,19 +109,23 @@ const DiaryView = props => {
       <TabHeader headerText="Diary" bgColor="#d87073" />
       <ScreenContainer>
         <Text>Hi</Text>
-        <FlatList
-          data={diaryEntries}
-          onRefresh={onRefresh}
-          refreshing={refreshing}
-          renderItem={({item}) => (
-            <EntryPreview
-              onPress={() => props.navigation.navigate('DiaryEntry', {...item})}
-              key={item.id}
-              {...item}
-            />
-          )}
-          keyExtractor={item => item.id}
-        />
+        <View style={{height: '100%'}}>
+          <FlatList
+            data={diaryEntries}
+            onRefresh={onRefresh}
+            refreshing={refreshing}
+            renderItem={({item}) => (
+              <EntryPreview
+                onPress={() =>
+                  props.navigation.navigate('DiaryEntry', {...item})
+                }
+                key={item.id}
+                {...item}
+              />
+            )}
+            keyExtractor={item => item.id}
+          />
+        </View>
         <Button title="Reset" onPress={resetDiary}>
           Reset Diary
         </Button>

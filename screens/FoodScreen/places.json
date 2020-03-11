@@ -1,439 +1,785 @@
 {
   "places": [
-    {
-      "name": "Chick-fil-a",
-      "Location": {
-        "lat": 33.6496,
-        "long": -117.8398
-      },
-      "Menu": [
-        {
-          "item": "Chicken Biscuit",
-          "calories": 460,
-          "price": 3.09,
-          "tags": ["breakfast"],
-          "description": "A breakfast portion of our famous boneless breast of chicken, seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a buttermilk biscuit baked fresh at each Restaurant."
-        },
-        {
-          "item": "Chick-n-Minis 4ct",
-          "calories": 360,
-          "price": 4.09,
-          "tags": ["breakfast"],
-          "description": "Bite-sized Chick-fil-A® Nuggets nestled in warm, mini yeast rolls that are lightly brushed with a honey butter spread."
-        },
-        {
-          "item": "Egg White Grill",
-          "calories": 290,
-          "price": 4.49,
-          "tags": ["breakfast"],
-          "description": "A breakfast portion of grilled chicken with a hint of citrus, served on a toasted multigrain English muffin with egg whites and American cheese."
-        },
-        {
-          "item": "Greek Yogurt Parfait w/ Granola",
-          "calories": 280,
-          "price": 4.29,
-          "tags": ["breakfast", "vegetarian"],
-          "description": "Creamy, organic vanilla bean Greek yogurt with fresh berries and your choice of toppings."
-        },
-        {
-          "item": "Bacon, Egg & Cheese Biscuit",
-          "calories": 420,
-          "price": 3.49,
-          "tags": ["breakfast"],
-          "description": "Delicious bacon and a folded egg, served on a freshly baked buttermilk biscuit with cheese."
-        },
-        {
-          "item": "Chicken, Egg & Cheese Bagel",
-          "calories": 500,
-          "price": 4.29,
-          "tags": ["breakfast"],
-          "description": "A breakfast portion of our famous boneless breast of chicken, served on a toasted sunflower multigrain bagel, along with a folded egg and American cheese."
-        },
-        {
-          "item": "Hash Brown Scramble Bowl w/ Nuggets",
-          "calories": 470,
-          "price": 4.39,
-          "tags": ["breakfast"],
-          "description": "A hearty morning meal of sliced Chick-fil-A Nuggets, crispy Hash Browns, scrambled eggs and a blend of Monterey Jack and Cheddar cheeses. Made fresh each morning. Served in a convenient bowl. Served with Jalapeño Salsa."
-        },
-        {
-          "item": "Spicy Southwest Salad w/ Grilled Filet (Cold)",
-          "calories": 450,
-          "price": 9.19,
-          "tags": ["lunch", "dinner"],
-          "description": "Slices of grilled spicy chicken breast served on a fresh bed of mixed greens, topped with grape tomatoes, a blend of Monterey Jack and Cheddar cheeses, and a zesty combination of poblano chiles, red bell peppers, roasted corn and black beans. Made fresh daily. Served with Seasoned Tortilla Strips, Chili Lime Pepitas, Creamy Salsa dressing or 2 packets of Jalapeño Salsa for an option with fewer calories (or guest’s choice of dressing)."
-        },
-        {
-          "item": "Spicy Southwest Salad w/ No Chicken",
-          "calories": 350,
-          "price": 6.95,
-          "tags": ["lunch", "dinner", "vegetarian"],
-          "description": "Slices of grilled spicy chicken breast served on a fresh bed of mixed greens, topped with grape tomatoes, a blend of Monterey Jack and Cheddar cheeses, and a zesty combination of poblano chiles, red bell peppers, roasted corn and black beans. Made fresh daily. Served with Seasoned Tortilla Strips, Chili Lime Pepitas, Creamy Salsa dressing or 2 packets of Jalapeño Salsa for an option with fewer calories (or guest’s choice of dressing)."
-        },
-        {
-          "item": "Cobb Salad w/ Nuggets",
-          "calories": 540,
-          "price": 8.99,
-          "tags": ["lunch", "dinner"],
-          "description": "Chick-fil-A® Nuggets, freshly breaded and pressure-cooked, sliced and served on a fresh bed of mixed greens, topped with roasted corn kernels, a blend of shredded Monterey Jack and Cheddar cheeses, crumbled bacon, sliced hard-boiled egg and grape tomatoes. Made fresh daily. Served with Charred Tomato and Crispy Red Bell Peppers. Pairs well with Avocado Lime Ranch dressing."
-        },
-        {
-          "item": "Cobb Salad w/ No Chicken",
-          "calories": 290,
-          "price": 6.75,
-          "tags": ["lunch", "dinner", "vegetarian"],
-          "description": "Chick-fil-A® Nuggets, freshly breaded and pressure-cooked, sliced and served on a fresh bed of mixed greens, topped with roasted corn kernels, a blend of shredded Monterey Jack and Cheddar cheeses, crumbled bacon, sliced hard-boiled egg and grape tomatoes. Made fresh daily. Served with Charred Tomato and Crispy Red Bell Peppers. Pairs well with Avocado Lime Ranch dressing."
-        },
-        {
-          "item": "Market Salad w/ Grilled Filet (Cold)",
-          "calories": 250,
-          "price": 9.19,
-          "tags": ["lunch", "dinner"],
-          "description": "Sliced grilled chicken breast served on a fresh bed of mixed greens, topped with crumbled blue cheese and a mix of red and green apples, strawberries and blueberries. Made fresh daily. Served with Harvest Nut Granola, Roasted Almonds and Light Balsamic Vinaigrette dressing (or guest’s choice of dressing)."
-        },
-        {
-          "item": "Market Salad w/ No Chicken",
-          "calories": 210,
-          "price": 6.95,
-          "tags": ["lunch", "dinner", "vegetarian"]
-        },
-        {
-          "item": "Grilled Nuggets 8ct",
-          "calories": 130,
-          "price": 5.25,
-          "tags": ["lunch", "dinner", "gluten free"],
-          "description": "Bite-sized pieces of freshly marinated boneless breast of chicken, grilled for a tender and juicy backyard-smoky taste. Available with guest's choice of dipping sauce."
-        },
-        {
-          "item": "Grilled Cool Wrap",
-          "calories": 350,
-          "price": 7.29,
-          "tags": ["lunch", "dinner"],
-          "description": "Sliced grilled chicken breast nestled in a fresh mix of Green Leaf lettuce with a blend of shredded Monterey Jack and Cheddar cheeses, tightly rolled in a flaxseed flour flat bread. Made fresh daily. Pairs well with Avocado Lime Ranch dressing (or guest’s choice of dressing)."
-        },
-        {
-          "item": "Chick-fil-A Nuggets 8ct",
-          "calories": 250,
-          "price": 4.39,
-          "tags": ["lunch", "dinner"],
-          "description": "Bite-sized pieces of boneless chicken breast, seasoned to perfection, freshly-breaded and pressure cooked in 100% refined peanut oil. Available with choice of dipping sauce."
-        },
-        {
-          "item": "Grilled Chicken Sandwich",
-          "calories": 320,
-          "price": 5.95,
-          "tags": ["lunch", "dinner"],
-          "description": "A lemon-herb marinated boneless breast of chicken, grilled for a tender and juicy backyard-smoky taste, served on a toasted Multigrain bun with Green Leaf letttuce and tomato. Pairs well with Honey Roasted BBQ sauce."
-        },
-        {
-          "item": "Chick-fil-A Chicken Sandwich",
-          "calories": 440,
-          "price": 4.29,
-          "tags": ["lunch", "dinner", "gluten free"],
-          "description": "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips. Gluten-free bun or multigrain bun also available at an additional cost."
-        },
-        {
-          "item": "Chick-fil-A Deluxe Sandwich w/ American Cheese",
-          "calories": 500,
-          "price": 4.99,
-          "tags": ["lunch", "dinner", "gluten free"],
-          "description": "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips, Green Leaf lettuce, tomato and American cheese. Gluten-free bun or multigrain bun also available at an additional cost."
-        }
-      ]
-    },
-    {
-      "name": "Taco Bell",
-      "Location": {
-        "lat": 33.651,
-        "long": -117.8409
-      },
-      "Menu": [
-        {
-          "item": "Chicken Quesadilla",
-          "calories": 500,
-          "price": 4.19,
-          "tags": ["breakfast", "lunch", "dinner"],
-          "description": "The Chicken Quesadilla is a purist’s meal; and we say 'purist' in the most complimenting way possible. It’s a simple flour tortilla with some grilled chicken, a hefty portion of melted three-cheese blend, creamy jalapeño sauce, and absolutely zero bells and whistles."
-        },
-        {
-          "item": "Cheese Quesadilla",
-          "calories": 450,
-          "price": 3.49,
-          "tags": ["breakfast", "lunch", "dinner", "vegetarian"],
-          "description": "The Cheese Quesadilla may appear to be basic but it is all things great. In fact, the Cheese Quesadilla often gets offended when it is referred to as being basic. Do you blame it?"
-        },
-        {
-          "item": "Double Cheesy Gordita Crunch",
-          "calories": 570,
-          "price": 3.49,
-          "tags": ["lunch", "dinner"],
-          "description": "Seasoned beef, lettuce, cheese, spicy ranch, 3 cheese blend"
-        },
-        {
-          "item": "Burrito Supreme",
-          "calories": 390,
-          "price": 3.49,
-          "tags": ["lunch", "dinner"],
-          "description": "Seasoned beef, cheese, tomatoes, reduced fat sour cream, onions, beans, red sauce, lettuce"
-        },
-        {
-          "item": "7-Layer Burrito",
-          "calories": 420,
-          "price": 3.59,
-          "tags": ["lunch", "dinner", "vegetarian"],
-          "description": "Beans, seasoned rice, reduced fat sour cream, lettuce, tomatoes, guacamole, 3 cheese blend"
-        },
-        {
-          "item": "Crunchwrap Supreme",
-          "calories": 530,
-          "price": 3.99,
-          "tags": ["lunch", "dinner"],
-          "description": "Seasoned beef, reduced fat sour cream, tomatoes, lettuce, nacho cheese sauce"
-        },
-        {
-          "item": "Power Menu Bowl",
-          "calories": 480,
-          "price": 5.49,
-          "tags": ["lunch", "dinner"],
-          "description": "The Power Menu Bowl is a real-life version of a video game power-up. Your choice of grilled chicken or steak, guacamole, reduced fat sour cream, freshly prepared pico de gallo, seasoned black beans, crisp romaine lettuce, and seasoned rice, packed into a seriously powerful bowl."
-        },
-        {
-          "item": "Power Menu Bowl - Veggie",
-          "calories": 430,
-          "price": 5.49,
-          "tags": ["lunch", "dinner", "vegetarian"],
-          "description": "Hear us out. It’s all the same fixings as the the Power Menu Bowl with the guacamole, reduced fat sour cream, freshly prepared pico de gallo, crisp romaine lettuce, and seasoned rice, packed into a seriously powerful bowl. But substitute the meat for a double portion of seasoned black beans."
-        },
-        {
-          "item": "Soft Taco",
-          "calories": 180,
-          "price": 1.49,
-          "tags": ["lunch", "dinner"],
-          "description": "Soft taco with seasoned beef, cheese, lettuce"
-        },
-        {
-          "item": "Soft Taco Supreme",
-          "calories": 210,
-          "price": 2.19,
-          "tags": ["lunch", "dinner"],
-          "description": "Soft taco with seasoned beef, cheese, lettuce, reduced fat sour cream, cheese, and tomatoes"
-        }
-      ]
-    },
-    {
-      "name": "In-N-Out",
-      "Location": {
-        "lat": 33.6502,
-        "long": -117.8407
-      },
-      "Menu": [
-        {
-          "item": "Hamburger w/Onion",
-          "calories": 390,
-          "price": 2.1,
-          "tags": ["lunch", "dinner"],
-          "description": ""
-        },
-        {
-          "item": "Hamburger w/Onion Protein Style",
-          "calories": 240,
-          "price": 2.1,
-          "tags": ["lunch", "dinner"],
-          "description": "Bun replaced with lettuce"
-        },
-        {
-          "item": "Cheeseburger w/Onion",
-          "calories": 480,
-          "tags": ["lunch", "dinner"],
-          "description": 2.4
-        },
-        {
-          "item": "French Fries",
-          "calories": 370,
-          "price": 1.6,
-          "tags": [
-            "lunch",
-            "dinner",
-            "side",
-            "vegetarian",
-            "vegan",
-            "gluten free"
-          ],
-          "description": ""
-        },
-        {
-          "item": "Double-Double w/Onion",
-          "calories": 670,
-          "price": 3.45,
-          "tags": ["lunch", "dinner"],
-          "description": ""
-        }
-      ]
-    },
-    {
-      "name": "Tender Greens",
-      "Location": {
-        "lat": 33.6503,
-        "long": -117.8381
-      },
-      "Menu": [
-        {
-          "item": "Salt & Pepper Chicken",
-          "calories": 250,
-          "price": 0,
-          "tags": ["lunch", "dinner", "gluten free"],
-          "description": "Free range, white and dark meat, garlic, oregano, thyme"
-        },
-        {
-          "item": "Chipotle Barbecue Chicken",
-          "calories": 300,
-          "price": 0,
-          "tags": ["lunch", "dinner", "gluten free"],
-          "description": "Free range, white and dark meat, chipotle barbecue sauce"
-        },
-        {
-          "item": "Buttermilk Fried Chicken",
-          "calories": 340,
-          "price": 0,
-          "tags": ["lunch", "dinner"],
-          "description": "Free range, white and dark meat, buttermilk fried, rosemary salt"
-        },
-        {
-          "item": "Steak",
-          "calories": 270,
-          "price": 0,
-          "tags": ["lunch", "dinner", "gluten free"],
-          "description": "Grilled medium rare"
-        },
-        {
-          "item": "Grilled Salmon",
-          "calories": 160,
-          "price": 0,
-          "tags": ["lunch", "dinner", "gluten free"],
-          "description": "GLOBALG.A.P. certified, sea salt, lemon, olive oil"
-        },
-        {
-          "item": "Seared Tuna",
-          "calories": 190,
-          "price": 0,
-          "tags": ["lunch", "dinner", "gluten free"],
-          "description": "MSC certified, grilled rare, sea salt, lemon, olive oil"
-        },
-        {
-          "item": "Falafel",
-          "calories": 210,
-          "price": 0,
-          "tags": ["lunch", "dinner", "vegetarian"],
-          "description": "Cumin and coriander spiced chickpea fritters with tzatziki"
-        },
-        {
-          "item": "Baby Greens Salad",
-          "calories": 125,
-          "price": 0,
-          "tags": ["lunch", "dinner", "vegetarian", "vegan", "gluten free"],
-          "description": "Baby lettuces, sherry vinaigrette"
-        },
-        {
-          "item": "Kale Salad",
-          "calories": 265,
-          "price": 0,
-          "tags": ["lunch", "dinner", "vegetarian", "gluten free"],
-          "description": "Parmesan, roasted garlic vinaigrette"
-        },
-        {
-          "item": "Baby Arugula Salad",
-          "calories": 180,
-          "price": 0,
-          "tags": ["lunch", "dinner", "vegetarian", "gluten free"],
-          "description": "Parmesan, fennel, lemon vinaigrette"
-        },
-        {
-          "item": "Butter Lettuce Salad",
-          "calories": 227,
-          "price": 0,
-          "tags": ["lunch", "dinner", "vegetarian", "gluten free"],
-          "description": "Chive, tarragon dressing"
-        },
-        {
-          "item": "Romaine Hearts Salad",
-          "calories": 190,
-          "price": 0,
-          "tags": ["lunch", "dinner", "vegetarian"],
-          "description": "Parmesan, caesar dressing"
-        },
-        {
-          "item": "Baby Spinach Salad",
-          "calories": 210,
-          "price": 0,
-          "tags": ["lunch", "dinner", "vegetarian"],
-          "description": "Nuts, goat cheese, cabernet vinaigrette"
-        },
-        {
-          "item": "Sprouted Brown Rice",
-          "calories": 240,
-          "price": 0,
-          "tags": ["lunch", "dinner", "side", "vegetarian", "vegan"],
-          "description": ""
-        },
-        {
-          "item": "Mashed Potatoes",
-          "calories": 250,
-          "price": 0,
-          "tags": ["lunch", "dinner", "side", "vegetarian"],
-          "description": ""
-        },
-        {
-          "item": "Seasonal Veggies",
-          "calories": 240,
-          "price": 0,
-          "tags": ["lunch", "dinner", "side", "vegetarian", "vegan"],
-          "description": ""
-        },
-        {
-          "item": "Mediterranean Steak Salad",
-          "calories": 800,
-          "price": 13.0,
-          "tags": ["lunch", "dinner", "gluten free"],
-          "description": "Steak, marinated feta, tomatoes, pickled cucumbers, green olives, herbs, baby greens, lemon vinaigrette"
-        },
-        {
-          "item": "Harvest Chicken Salad",
-          "calories": 960,
-          "price": 13.0,
-          "tags": ["lunch", "dinner", "gluten free"],
-          "description": "Salt & pepper chicken, seasonal fruit, artisan cheese, nuts, baby greens, golden balsamic vinaigrette"
-        },
-        {
-          "item": "Chipotle Barbeque Chicken Salad",
-          "calories": 610,
-          "price": 12.5,
-          "tags": ["lunch", "dinner"],
-          "description": "Avocado, cotija, tortilla strips, green onion, radishes, romaine, cilantro lime dressing"
-        }
-      ]
-    },
-    {
-      "name": "Mendocino Farms",
-      "Location": {
-        "lat": 33.6509,
-        "long": -117.8391
-      },
-      "Menu": [
-        {
-          "item": "The Farm Club Sandwich",
-          "calories": 760,
-          "price": 10.95,
-          "tags": ["lunch", "dinner", "gluten free"],
-          "description": "shaved, roasted turkey breast, smashed avocado, nitrate-free Applewood smoked bacon, herb aioli, tomatoes, Scarborough Farm’s greens, pickled red onions (440 cal) on Mom’s seeded whole wheat (320 cal). can be requested gluten free by selecting the gf bread option"
-        },
-        {
-          "item": "A Sandwich Study of Heat Sandwich",
-          "calories": 760,
-          "price": 10.65,
-          "tags": ["lunch", "dinner", "gluten free"],
-          "description": "shaved, roasted turkey breast, smoked gouda, smashed avocado, chili aioli, jalapeno relish, tomatoes, romaine lettuce (420 cal) on panini-pressed rustic white (320 cal) served with a side of salsa roja (20 cal). can be requested gluten free by selecting the gf bread option"
-        }
-      ]
-    }
+	{
+	  "name": "Chick-fil-a",
+	  "coordinates": {
+		"latitude": 33.6496,
+		"longitude": -117.8398
+	  }
+	},
+	{
+	  "name": "Taco Bell",
+	  "coordinates": {
+		"latitude": 33.651,
+		"longitude": -117.8409
+	  }
+	},
+	{
+	  "name": "In-N-Out",
+	  "coordinates": {
+		"latitude": 33.6502,
+		"longitude": -117.8407
+	  }
+	},
+	{
+	  "name": "Tender Greens",
+	  "coordinates": {
+		"latitude": 33.6503,
+		"longitude": -117.8381
+	  }
+	},
+	{
+	  "name": "Mendocino Farms",
+	  "coordinates": {
+		"latitude": 33.6509,
+		"longitude": -117.8391
+	  }
+	}
+  ],
+  "meals": [
+	{
+	  "name": "Chicken Biscuit",
+	  "location": "Chick-fil-a",
+	  "calories": 460,
+	  "price": 3.09,
+	  "tags": [
+		"breakfast",
+		"chicken",
+		"biscuit",
+		"savory",
+		"fried",
+		"sandwich"
+	  ],
+	  "description": "A breakfast portion of our famous boneless breast of chicken, seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a buttermilk biscuit baked fresh at each Restaurant."
+	},
+	{
+	  "name": "Chick-n-Minis 4ct",
+	  "location": "Chick-fil-a",
+	  "calories": 360,
+	  "price": 4.09,
+	  "tags": [
+		"breakfast",
+		"chicken",
+		"biscuit",
+		"savory",
+		"fried",
+		"sandwich"
+	  ],
+	  "description": "Bite-sized Chick-fil-A® Nuggets nestled in warm, mini yeast rolls that are lightly brushed with a honey butter spread."
+	},
+	{
+	  "name": "Egg White Grill",
+	  "location": "Chick-fil-a",
+	  "calories": 290,
+	  "price": 4.49,
+	  "tags": ["breakfast", "grilled", "egg", "chicken", "sandwich", "savory"],
+	  "description": "A breakfast portion of grilled chicken with a hint of citrus, served on a toasted multigrain English muffin with egg whites and American cheese."
+	},
+	{
+	  "name": "Greek Yogurt Parfait w/ Granola",
+	  "location": "Chick-fil-a",
+	  "calories": 280,
+	  "price": 4.29,
+	  "tags": ["breakfast", "vegetarian", "yogurt", "parfait", "sweet"],
+	  "description": "Creamy, organic vanilla bean Greek yogurt with fresh berries and your choice of toppings."
+	},
+	{
+	  "name": "Bacon, Egg & Cheese Biscuit",
+	  "calories": 420,
+	  "location": "Chick-fil-a",
+	  "price": 3.49,
+	  "tags": ["breakfast", "savory", "egg", "bacon", "cheese", "sandwich"],
+	  "description": "Delicious bacon and a folded egg, served on a freshly baked buttermilk biscuit with cheese."
+	},
+	{
+	  "name": "Chicken, Egg & Cheese Bagel",
+	  "location": "Chick-fil-a",
+	  "calories": 500,
+	  "price": 4.29,
+	  "tags": [
+		"breakfast",
+		"chicken",
+		"cheese",
+		"bagel",
+		"sandwich",
+		"egg",
+		"savory"
+	  ],
+	  "description": "A breakfast portion of our famous boneless breast of chicken, served on a toasted sunflower multigrain bagel, along with a folded egg and American cheese."
+	},
+	{
+	  "name": "Hash Brown Scramble Bowl w/ Nuggets",
+	  "location": "Chick-fil-a",
+	  "calories": 470,
+	  "price": 4.39,
+	  "tags": [
+		"breakfast",
+		"savory",
+		"chicken",
+		"fried",
+		"potatoes",
+		"bowl",
+		"egg",
+		"cheese",
+		"savory"
+	  ],
+	  "description": "A hearty morning meal of sliced Chick-fil-A Nuggets, crispy Hash Browns, scrambled eggs and a blend of Monterey Jack and Cheddar cheeses. Made fresh each morning. Served in a convenient bowl. Served with Jalapeño Salsa."
+	},
+	{
+	  "name": "Spicy Southwest Salad w/ Grilled Filet (Cold)",
+	  "calories": 450,
+	  "location": "Chick-fil-a",
+	  "price": 9.19,
+	  "tags": ["lunch", "dinner", "salad", "grilled", "chicken", "savory"],
+	  "description": "Slices of grilled spicy chicken breast served on a fresh bed of mixed greens, topped with grape tomatoes, a blend of Monterey Jack and Cheddar cheeses, and a zesty combination of poblano chiles, red bell peppers, roasted corn and black beans. Made fresh daily. Served with Seasoned Tortilla Strips, Chili Lime Pepitas, Creamy Salsa dressing or 2 packets of Jalapeño Salsa for an option with fewer calories (or guest’s choice of dressing)."
+	},
+	{
+	  "name": "Spicy Southwest Salad w/ No Chicken",
+	  "location": "Chick-fil-a",
+	  "calories": 350,
+	  "price": 6.95,
+	  "tags": ["lunch", "dinner", "vegetarian", "salad", "savory"],
+	  "description": "Slices of grilled spicy chicken breast served on a fresh bed of mixed greens, topped with grape tomatoes, a blend of Monterey Jack and Cheddar cheeses, and a zesty combination of poblano chiles, red bell peppers, roasted corn and black beans. Made fresh daily. Served with Seasoned Tortilla Strips, Chili Lime Pepitas, Creamy Salsa dressing or 2 packets of Jalapeño Salsa for an option with fewer calories (or guest’s choice of dressing)."
+	},
+	{
+	  "name": "Cobb Salad w/ Nuggets",
+	  "location": "Chick-fil-a",
+	  "calories": 540,
+	  "price": 8.99,
+	  "tags": ["lunch", "dinner", "salad", "savory", "cheese", "bacon", "egg"],
+	  "description": "Chick-fil-A® Nuggets, freshly breaded and pressure-cooked, sliced and served on a fresh bed of mixed greens, topped with roasted corn kernels, a blend of shredded Monterey Jack and Cheddar cheeses, crumbled bacon, sliced hard-boiled egg and grape tomatoes. Made fresh daily. Served with Charred Tomato and Crispy Red Bell Peppers. Pairs well with Avocado Lime Ranch dressing."
+	},
+	{
+	  "name": "Cobb Salad w/ No Chicken",
+	  "location": "Chick-fil-a",
+	  "calories": 290,
+	  "price": 6.75,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"vegetarian",
+		"salad",
+		"savory",
+		"cheese",
+		"egg"
+	  ],
+	  "description": "Chick-fil-A® Nuggets, freshly breaded and pressure-cooked, sliced and served on a fresh bed of mixed greens, topped with roasted corn kernels, a blend of shredded Monterey Jack and Cheddar cheeses, crumbled bacon, sliced hard-boiled egg and grape tomatoes. Made fresh daily. Served with Charred Tomato and Crispy Red Bell Peppers. Pairs well with Avocado Lime Ranch dressing."
+	},
+	{
+	  "name": "Market Salad w/ Grilled Filet (Cold)",
+	  "location": "Chick-fil-a",
+	  "calories": 250,
+	  "price": 9.19,
+	  "tags": ["lunch", "dinner", "salad", "savory", "grilled", "chicken"],
+	  "description": "Sliced grilled chicken breast served on a fresh bed of mixed greens, topped with crumbled blue cheese and a mix of red and green apples, strawberries and blueberries. Made fresh daily. Served with Harvest Nut Granola, Roasted Almonds and Light Balsamic Vinaigrette dressing (or guest’s choice of dressing)."
+	},
+	{
+	  "name": "Market Salad w/ No Chicken",
+	  "location": "Chick-fil-a",
+	  "calories": 210,
+	  "price": 6.95,
+	  "tags": ["lunch", "dinner", "vegetarian", "savory", "salad"],
+	  "description": " "
+	},
+	{
+	  "name": "Grilled Nuggets 8ct",
+	  "location": "Chick-fil-a",
+	  "calories": 130,
+	  "price": 5.25,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"gluten free",
+		"grilled",
+		"chicken",
+		"savory"
+	  ],
+	  "description": "Bite-sized pieces of freshly marinated boneless breast of chicken, grilled for a tender and juicy backyard-smoky taste. Available with guest's choice of dipping sauce."
+	},
+	{
+	  "name": "Grilled Cool Wrap",
+	  "location": "Chick-fil-a",
+	  "calories": 350,
+	  "price": 7.29,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"wrap",
+		"grilled",
+		"chicken",
+		"cheese",
+		"savory"
+	  ],
+	  "description": "Sliced grilled chicken breast nestled in a fresh mix of Green Leaf lettuce with a blend of shredded Monterey Jack and Cheddar cheeses, tightly rolled in a flaxseed flour flat bread. Made fresh daily. Pairs well with Avocado Lime Ranch dressing (or guest’s choice of dressing)."
+	},
+	{
+	  "name": "Chick-fil-A Nuggets 8ct",
+	  "location": "Chick-fil-a",
+	  "calories": 250,
+	  "price": 4.39,
+	  "tags": ["lunch", "dinner", "chicken", "fried", "savory"],
+	  "description": "Bite-sized pieces of boneless chicken breast, seasoned to perfection, freshly-breaded and pressure cooked in 100% refined peanut oil. Available with choice of dipping sauce."
+	},
+	{
+	  "name": "Grilled Chicken Sandwich",
+	  "location": "Chick-fil-a",
+	  "calories": 320,
+	  "price": 5.95,
+	  "tags": ["lunch", "dinner", "sandwich", "chicken", "grilled", "savory"],
+	  "description": "A lemon-herb marinated boneless breast of chicken, grilled for a tender and juicy backyard-smoky taste, served on a toasted Multigrain bun with Green Leaf letttuce and tomato. Pairs well with Honey Roasted BBQ sauce."
+	},
+	{
+	  "name": "Chick-fil-A Chicken Sandwich",
+	  "location": "Chick-fil-a",
+	  "calories": 440,
+	  "price": 4.29,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"gluten free",
+		"sandwich",
+		"chicken",
+		"fried"
+	  ],
+	  "description": "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips. Gluten-free bun or multigrain bun also available at an additional cost."
+	},
+	{
+	  "name": "Chick-fil-A Deluxe Sandwich w/ American Cheese",
+	  "location": "Chick-fil-a",
+	  "calories": 500,
+	  "price": 4.99,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"gluten free",
+		"sandwich",
+		"cheese",
+		"chicken",
+		"fried"
+	  ],
+	  "description": "A boneless breast of chicken seasoned to perfection, hand-breaded, pressure cooked in 100% refined peanut oil and served on a toasted, buttered bun with dill pickle chips, Green Leaf lettuce, tomato and American cheese. Gluten-free bun or multigrain bun also available at an additional cost."
+	},
+	{
+	  "name": "Chicken Quesadilla",
+	  "location": "Taco Bell",
+	  "calories": 500,
+	  "price": 4.19,
+	  "tags": [
+		"breakfast",
+		"lunch",
+		"dinner",
+		"mexican",
+		"chicken",
+		"cheese",
+		"savory"
+	  ],
+	  "description": "The Chicken Quesadilla is a purist’s meal; and we say 'purist' in the most complimenting way possible. It’s a simple flour tortilla with some grilled chicken, a hefty portion of melted three-cheese blend, creamy jalapeño sauce, and absolutely zero bells and whistles."
+	},
+	{
+	  "name": "Cheese Quesadilla",
+	  "location": "Taco Bell",
+	  "calories": 450,
+	  "price": 3.49,
+	  "tags": [
+		"breakfast",
+		"lunch",
+		"dinner",
+		"vegetarian",
+		"cheese",
+		"savory",
+		"mexican"
+	  ],
+	  "description": "The Cheese Quesadilla may appear to be basic but it is all things great. In fact, the Cheese Quesadilla often gets offended when it is referred to as being basic. Do you blame it?"
+	},
+	{
+	  "name": "Double Cheesy Gordita Crunch",
+	  "location": "Taco Bell",
+	  "calories": 570,
+	  "price": 3.49,
+	  "tags": ["lunch", "dinner", "mexican", "cheese", "beef", "savory"],
+	  "description": "Seasoned beef, lettuce, cheese, spicy ranch, 3 cheese blend"
+	},
+	{
+	  "name": "Burrito Supreme",
+	  "location": "Taco Bell",
+	  "calories": 390,
+	  "price": 3.49,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"burrito",
+		"mexican",
+		"savory",
+		"beef",
+		"cheese",
+		"beans"
+	  ],
+	  "description": "Seasoned beef, cheese, tomatoes, reduced fat sour cream, onions, beans, red sauce, lettuce"
+	},
+	{
+	  "name": "7-Layer Burrito",
+	  "location": "Taco Bell",
+	  "calories": 420,
+	  "price": 3.59,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"vegetarian",
+		"beans",
+		"rice",
+		"mexican",
+		"savory"
+	  ],
+	  "description": "Beans, seasoned rice, reduced fat sour cream, lettuce, tomatoes, guacamole, 3 cheese blend"
+	},
+	{
+	  "name": "Crunchwrap Supreme",
+	  "location": "Taco Bell",
+	  "calories": 530,
+	  "price": 3.99,
+	  "tags": ["lunch", "dinner", "savory", "mexican", "beef", "cheese"],
+	  "description": "Seasoned beef, reduced fat sour cream, tomatoes, lettuce, nacho cheese sauce"
+	},
+	{
+	  "name": "Power Menu Bowl",
+	  "location": "Taco Bell",
+	  "calories": 480,
+	  "price": 5.49,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"bowl",
+		"mexican",
+		"chicken",
+		"grilled",
+		"beef",
+		"beans",
+		"rice"
+	  ],
+	  "description": "The Power Menu Bowl is a real-life version of a video game power-up. Your choice of grilled chicken or steak, guacamole, reduced fat sour cream, freshly prepared pico de gallo, seasoned black beans, crisp romaine lettuce, and seasoned rice, packed into a seriously powerful bowl."
+	},
+	{
+	  "name": "Power Menu Bowl - Veggie",
+	  "location": "Taco Bell",
+	  "calories": 430,
+	  "price": 5.49,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"vegetarian",
+		"savory",
+		"mexican",
+		"rice",
+		"bowl",
+		"beans"
+	  ],
+	  "description": "Hear us out. It’s all the same fixings as the the Power Menu Bowl with the guacamole, reduced fat sour cream, freshly prepared pico de gallo, crisp romaine lettuce, and seasoned rice, packed into a seriously powerful bowl. But substitute the meat for a double portion of seasoned black beans."
+	},
+	{
+	  "name": "Soft Taco",
+	  "location": "Taco Bell",
+	  "calories": 180,
+	  "price": 1.49,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"mexican",
+		"taco",
+		"beef",
+		"cheese",
+		"savory"
+	  ],
+	  "description": "Soft taco with seasoned beef, cheese, lettuce"
+	},
+	{
+	  "name": "Soft Taco Supreme",
+	  "location": "Taco Bell",
+	  "calories": 210,
+	  "price": 2.19,
+	  "tags": ["lunch", "dinner", "cheese", "beef", "mexican", "savory"],
+	  "description": "Soft taco with seasoned beef, cheese, lettuce, reduced fat sour cream, cheese, and tomatoes"
+	},
+	{
+	  "name": "Hamburger w/Onion",
+	  "location": "In-N-Out",
+	  "calories": 390,
+	  "price": 2.1,
+	  "tags": ["lunch", "dinner", "burger", "american", "savory", "beef"],
+	  "description": " "
+	},
+	{
+	  "name": "Hamburger w/Onion Protein Style",
+	  "location": "In-N-Out",
+	  "calories": 240,
+	  "price": 2.1,
+	  "tags": ["lunch", "dinner", "beef", "burger", "american", "savory"],
+	  "description": "Bun replaced with lettuce"
+	},
+	{
+	  "name": "Cheeseburger w/Onion",
+	  "location": "In-N-Out",
+	  "calories": 480,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"savory",
+		"american",
+		"cheese",
+		"beef",
+		"burger"
+	  ],
+	  "description": 2.4
+	},
+	{
+	  "name": "French Fries",
+	  "location": "In-N-Out",
+	  "calories": 370,
+	  "price": 1.6,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"side",
+		"vegetarian",
+		"vegan",
+		"gluten free",
+		"potatoes",
+		"american",
+		"savory"
+	  ],
+	  "description": " "
+	},
+	{
+	  "name": "Double-Double w/Onion",
+	  "location": "In-N-Out",
+	  "calories": 670,
+	  "price": 3.45,
+	  "tags": ["lunch", "dinner", "beef", "savory", "american", "burger"],
+	  "description": " "
+	},
+	{
+	  "name": "Salt & Pepper Chicken",
+	  "location": "Tender Greens",
+	  "calories": 250,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"gluten free",
+		"savory",
+		"american (new)",
+		"chicken"
+	  ],
+	  "description": "Free range, white and dark meat, garlic, oregano, thyme"
+	},
+	{
+	  "name": "Chipotle Barbecue Chicken",
+	  "location": "Tender Greens",
+	  "calories": 300,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"gluten free",
+		"chicken",
+		"american (new)",
+		"savory"
+	  ],
+	  "description": "Free range, white and dark meat, chipotle barbecue sauce"
+	},
+	{
+	  "name": "Buttermilk Fried Chicken",
+	  "location": "Tender Greens",
+	  "calories": 340,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"chicken",
+		"fried",
+		"american (new)",
+		"savory"
+	  ],
+	  "description": "Free range, white and dark meat, buttermilk fried, rosemary salt"
+	},
+	{
+	  "name": "Steak",
+	  "location": "Tender Greens",
+	  "calories": 270,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"gluten free",
+		"savory",
+		"beef",
+		"american (new)"
+	  ],
+	  "description": "Grilled medium rare"
+	},
+	{
+	  "name": "Grilled Salmon",
+	  "location": "Tender Greens",
+	  "calories": 160,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"gluten free",
+		"seafood",
+		"grilled",
+		"american (new)",
+		"savory"
+	  ],
+	  "description": "GLOBALG.A.P. certified, sea salt, lemon, olive oil"
+	},
+	{
+	  "name": "Seared Tuna",
+	  "location": "Tender Greens",
+	  "calories": 190,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"gluten free",
+		"seafood",
+		"savory",
+		"american (new)"
+	  ],
+	  "description": "MSC certified, grilled rare, sea salt, lemon, olive oil"
+	},
+	{
+	  "name": "Falafel",
+	  "location": "Tender Greens",
+	  "calories": 210,
+	  "price": 0,
+	  "tags": ["lunch", "dinner", "vegetarian", "savory", "american (new)"],
+	  "description": "Cumin and coriander spiced chickpea fritters with tzatziki"
+	},
+	{
+	  "name": "Baby Greens Salad",
+	  "location": "Tender Greens",
+	  "calories": 125,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"vegetarian",
+		"vegan",
+		"gluten free",
+		"salad",
+		"american (new)",
+		"savory"
+	  ],
+	  "description": "Baby lettuces, sherry vinaigrette"
+	},
+	{
+	  "name": "Kale Salad",
+	  "location": "Tender Greens",
+	  "calories": 265,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"vegetarian",
+		"gluten free",
+		"salad",
+		"savory",
+		"american (new)"
+	  ],
+	  "description": "Parmesan, roasted garlic vinaigrette"
+	},
+	{
+	  "name": "Baby Arugula Salad",
+	  "location": "Tender Greens",
+	  "calories": 180,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"vegetarian",
+		"gluten free",
+		"savory",
+		"salad",
+		"american (new)"
+	  ],
+	  "description": "Parmesan, fennel, lemon vinaigrette"
+	},
+	{
+	  "name": "Butter Lettuce Salad",
+	  "location": "Tender Greens",
+	  "calories": 227,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"vegetarian",
+		"gluten free",
+		"salad",
+		"american (new)",
+		"savory"
+	  ],
+	  "description": "Chive, tarragon dressing"
+	},
+	{
+	  "name": "Romaine Hearts Salad",
+	  "location": "Tender Greens",
+	  "calories": 190,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"vegetarian",
+		"salad",
+		"american (new)",
+		"savory"
+	  ],
+	  "description": "Parmesan, caesar dressing"
+	},
+	{
+	  "name": "Baby Spinach Salad",
+	  "location": "Tender Greens",
+	  "calories": 210,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"vegetarian",
+		"salad",
+		"american (new)",
+		"savory"
+	  ],
+	  "description": "Nuts, goat cheese, cabernet vinaigrette"
+	},
+	{
+	  "name": "Sprouted Brown Rice",
+	  "location": "Tender Greens",
+	  "calories": 240,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"side",
+		"vegetarian",
+		"vegan",
+		"rice",
+		"savory",
+		"american (new)"
+	  ],
+	  "description": " "
+	},
+	{
+	  "name": "Mashed Potatoes",
+	  "location": "Tender Greens",
+	  "calories": 250,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"side",
+		"vegetarian",
+		"potatoes",
+		"american (new)",
+		"savory"
+	  ],
+	  "description": " "
+	},
+	{
+	  "name": "Seasonal Veggies",
+	  "location": "Tender Greens",
+	  "calories": 240,
+	  "price": 0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"side",
+		"vegetarian",
+		"vegan",
+		"savory",
+		"american (new)"
+	  ],
+	  "description": " "
+	},
+	{
+	  "name": "Mediterranean Steak Salad",
+	  "location": "Tender Greens",
+	  "calories": 800,
+	  "price": 13.0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"gluten free",
+		"salad",
+		"beef",
+		"cheese",
+		"american (new)",
+		"savory"
+	  ],
+	  "description": "Steak, marinated feta, tomatoes, pickled cucumbers, green olives, herbs, baby greens, lemon vinaigrette"
+	},
+	{
+	  "name": "Harvest Chicken Salad",
+	  "location": "Tender Greens",
+	  "calories": 960,
+	  "price": 13.0,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"gluten free",
+		"salad",
+		"savory",
+		"american (new)",
+		"chicken"
+	  ],
+	  "description": "Salt & pepper chicken, seasonal fruit, artisan cheese, nuts, baby greens, golden balsamic vinaigrette"
+	},
+	{
+	  "name": "Chipotle Barbeque Chicken Salad",
+	  "location": "Tender Greens",
+	  "calories": 610,
+	  "price": 12.5,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"chicken",
+		"salad",
+		"savory",
+		"american (new)"
+	  ],
+	  "description": "Avocado, cotija, tortilla strips, green onion, radishes, romaine, cilantro lime dressing"
+	},
+	{
+	  "name": "The Farm Club Sandwich",
+	  "location": "Mendocino Farms",
+	  "calories": 760,
+	  "price": 10.95,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"gluten free",
+		"sandwich",
+		"american (new)",
+		"turkey",
+		"bacon",
+		"savory"
+	  ],
+	  "description": "shaved, roasted turkey breast, smashed avocado, nitrate-free Applewood smoked bacon, herb aioli, tomatoes, Scarborough Farm’s greens, pickled red onions (440 cal) on Mom’s seeded whole wheat (320 cal). can be requested gluten free by selecting the gf bread option"
+	},
+	{
+	  "name": "A Sandwich Study of Heat Sandwich",
+	  "location": "Mendocino Farms",
+	  "calories": 760,
+	  "price": 10.65,
+	  "tags": [
+		"lunch",
+		"dinner",
+		"gluten free",
+		"turkey",
+		"cheese",
+		"sandwich",
+		"american (new)",
+		"savory"
+	  ],
+	  "description": "shaved, roasted turkey breast, smoked gouda, smashed avocado, chili aioli, jalapeno relish, tomatoes, romaine lettuce (420 cal) on panini-pressed rustic white (320 cal) served with a side of salsa roja (20 cal). can be requested gluten free by selecting the gf bread option"
+	}
   ]
 }

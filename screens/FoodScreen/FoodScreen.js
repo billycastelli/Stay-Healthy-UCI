@@ -4,10 +4,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Geolocation from '@react-native-community/geolocation';
 import AppContext from '../../AppContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import AsyncStorage from '@react-native-community/async-storage';
 
-import {Text, View, ScrollView, FlatList} from 'react-native';
-
-import placesJson from './places.json';
+import {Text, View, FlatList, ActivityIndicator} from 'react-native';
 
 import {
   NearbyMeal,
@@ -25,15 +24,10 @@ import {
 } from './Styles.js';
 
 const calcDistance = (userCoords, restaurantCoords) => {
-  const p = 0.017453292519943295;
-  const a =
-    0.5 -
-    Math.cos((userCoords.latitude - restaurantCoords.lat) * p) / 2 +
-    (Math.cos(userCoords.latitude * p) *
-      Math.cos(restaurantCoords.lat * p) *
-      (1 - Math.cos((userCoords.longitude - restaurantCoords.long) * p))) /
-      2;
-  return 12742 * Math.asin(Math.sqrt(a)) * 0.621371;
+  return Math.sqrt(
+    Math.pow(userCoords.latitude - restaurantCoords.latitude, 2) +
+      Math.pow(userCoords.longitude - restaurantCoords.longitude, 2),
+  );
 };
 
 class TabHeader extends React.Component {
@@ -62,9 +56,10 @@ class NearbyMealItem extends React.Component {
     return (
       <TouchableMealListing onPress={this.props.onPress}>
         <NearbyMeal>
-          <MealName>{this.props.name}</MealName>
+          <MealName>{this.props.item}</MealName>
           <MealOrigin>
-            {this.props.location} • {this.props.priceRange} •{' '}
+            {this.props.restaurant}
+            {this.props.price > 0 && ` • $${this.props.price}`} •{' '}
             {this.props.calories} cal
           </MealOrigin>
         </NearbyMeal>
@@ -77,108 +72,116 @@ const FoodStack = createStackNavigator();
 const FoodView = props => {
   // This screen will use the users height, weight, age, etc to send
   // a request to our database and will receive and display food recommendations
-  const allPlaces = placesJson.places;
   // const [curPosition, setCurPosition] = useState({});
   // const [firstDistance, setFirstDistance] = useState('-0.0mi');
-  const d = new Date();
-  const whichMeal =
-    d.getHours() < 11 ? 'breakfast' : d.getHours() < 16 ? 'lunch' : 'dinner';
-  // useEffect(() => {
-  // Geolocation.getCurrentPosition(info => console.log(info));
-  // Geolocation.getCurrentPosition(info =>
-  // setFirstDistance(`${calcDistance(info.coords, firstPlace.Location)}mi`),
-  // );
-  // }, [firstPlace.Location]);
-  const calRange = [0, 400];
-  const places = allPlaces.map(place => {
-    place.Menu = place.Menu.filter(
-      meal =>
-        meal.tags.includes(whichMeal) &&
-        meal.calories < calRange[1] &&
-        meal.calories > calRange[0],
-    );
-    return place;
-  });
+  const [tags, setTags] = useState([]);
+  const [meals, setMeals] = useState(null);
+  const [whichMeal, setWhichMeal] = useState('');
+
+  useEffect(() => {
+    const setVeg = async () => {
+      const newTags = [];
+      const vegeRes = await AsyncStorage.getItem('isVegetarian');
+      if (vegeRes === 'true') newTags.push('vegetarian');
+      const veganRes = await AsyncStorage.getItem('isVegan');
+      if (veganRes === 'true') newTags.push('vegan');
+      const d = new Date();
+      const nextMeal =
+        d.getHours() < 11
+          ? 'breakfast'
+          : d.getHours() < 16
+          ? 'lunch'
+          : 'dinner';
+
+      newTags.push(nextMeal);
+      setWhichMeal(nextMeal);
+      setTags(newTags);
+    };
+    setVeg();
+  }, []);
+
+  useEffect(() => {
+    const calRange = [0, 400];
+    const fetchMealsList = async () => {
+      try {
+        const res = await fetch(
+          'https://gb6o73460i.execute-api.us-west-2.amazonaws.com/prod/meals',
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            },
+            body: JSON.stringify({
+              tags: tags,
+              minCalories: calRange[0],
+              maxCalories: calRange[1],
+            }),
+          },
+        );
+        if (!res) {
+          throw 'poop';
+        }
+        const recvdMeals = await res.json();
+        Geolocation.getCurrentPosition(pos => {
+          setMeals(
+            recvdMeals
+              .filter(
+                meal =>
+                  meal.calories < calRange[1] && meal.calories > calRange[0],
+              )
+              .sort(
+                (a, b) =>
+                  calcDistance(pos.coords, a.coordinates) <
+                  calcDistance(pos.coords, b.coordinates),
+              ),
+          );
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchMealsList();
+  }, [tags]);
 
   return (
     <View style={{flex: 1, paddingTop: 40}}>
       <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
       <ScreenTitle>Next meal: {whichMeal}</ScreenTitle>
-      {/*
-      <FlatList
-        data={places}
-        renderItem={({item}) => (
-          <NearbyMealItem
-            key={item.name + item.Menu[0].item}
-            name={item.Menu[0].item}
-            priceRange={`$${item.Menu[0].price}`}
-            distance={''}
-            location={item.name}
-            calories={item.Menu[0].calories}
-            onPress={() =>
-              props.navigation.navigate('MealInfoModal', {
-                name: item.Menu[0].item,
-                location: item.name,
-                priceRange: `$${item.Menu[0].price}`,
-                description: item.Menu[0].description,
-                tags: item.Menu[0].tags,
-                calories: item.Menu[0].calories,
-              })
-            }
-          />
-        )}
-        keyExtractor={item => item.name}
-      />
-	  */}
-      <FlatList
-        data={places}
-        renderItem={({item}) =>
-          item.Menu[0] &&
-          item.Menu.map(meal => (
+      {meals ? (
+        <FlatList
+          data={meals}
+          renderItem={({item}) => (
             <NearbyMealItem
-              key={item.name + meal.item}
-              name={meal.item}
-              priceRange={`$${meal.price}`}
+              key={item.item + item.restaurant}
               distance={''}
-              location={item.name}
-              calories={meal.calories}
+              {...item}
               onPress={() =>
-                props.navigation.navigate('MealInfoModal', {
-                  name: meal.item,
-                  location: item.name,
-                  priceRange: `$${meal.price}`,
-                  description: meal.description,
-                  tags: meal.tags,
-                  calories: meal.calories,
-                })
+                props.navigation.navigate('MealInfoModal', {...item})
               }
             />
-          ))
-        }
-        keyExtractor={item => item.name}
-      />
+          )}
+          keyExtractor={item => item.item}
+        />
+      ) : (
+        <ActivityIndicator size="large" />
+      )}
     </View>
   );
 };
 
 function MealInfoModal({route, navigation}) {
-  const {
-    name,
-    location,
-    priceRange,
-    description,
-    tags,
-    calories,
-  } = route.params;
+  const {item, restaurant, price, description, tags, calories} = route.params;
   const {addDiaryEntry} = useContext(AppContext);
   const [date, setDate] = useState(new Date());
   return (
     <SingleMealContainer>
-      <ScreenTitle>{name}</ScreenTitle>
+      <ScreenTitle>{item}</ScreenTitle>
       <MealListingInfo>
         <MealListingDesc>{description}</MealListingDesc>
-        <Text>{location}</Text>
-        <Text>{priceRange}</Text>
+        <Text>{restaurant}</Text>
+        <Text>{price}</Text>
         <Text>{calories}</Text>
 
         <Text>{tags.map(tag => `${tag}, `)}</Text>
@@ -198,8 +201,8 @@ function MealInfoModal({route, navigation}) {
         onPress={() =>
           addDiaryEntry(
             {
-              name: name,
-              location: location,
+              name: item,
+              location: restaurant,
               calories: calories,
               tags: tags,
             },
