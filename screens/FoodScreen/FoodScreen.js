@@ -6,7 +6,7 @@ import AppContext from '../../AppContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {Text, View, ScrollView, FlatList} from 'react-native';
+import {Text, View, FlatList, ActivityIndicator} from 'react-native';
 
 import {
   NearbyMeal,
@@ -25,8 +25,8 @@ import {
 
 const calcDistance = (userCoords, restaurantCoords) => {
   return Math.sqrt(
-    Math.pow(userCoords.latitude - restaurantCoords.lat, 2) +
-      Math.pow(userCoords.longitude - restaurantCoords.long, 2),
+    Math.pow(userCoords.latitude - restaurantCoords.latitude, 2) +
+      Math.pow(userCoords.longitude - restaurantCoords.longitude, 2),
   );
 };
 
@@ -58,8 +58,9 @@ class NearbyMealItem extends React.Component {
         <NearbyMeal>
           <MealName>{this.props.item}</MealName>
           <MealOrigin>
-            {this.props.restaurant} • {this.props.price} • {this.props.calories}{' '}
-            cal
+            {this.props.restaurant}
+            {this.props.price > 0 && ` • $${this.props.price}`} •{' '}
+            {this.props.calories} cal
           </MealOrigin>
         </NearbyMeal>
       </TouchableMealListing>
@@ -74,13 +75,9 @@ const FoodView = props => {
   // const [curPosition, setCurPosition] = useState({});
   // const [firstDistance, setFirstDistance] = useState('-0.0mi');
   const [tags, setTags] = useState([]);
-  const [meals, setMeals] = useState([]);
-  // useEffect(() => {
-  // Geolocation.getCurrentPosition(info => console.log(info));
-  // Geolocation.getCurrentPosition(info =>
-  // setFirstDistance(`${calcDistance(info.coords, firstPlace.Location)}mi`),
-  // );
-  // }, [firstPlace.Location]);
+  const [meals, setMeals] = useState(null);
+  const [whichMeal, setWhichMeal] = useState('');
+
   useEffect(() => {
     const setVeg = async () => {
       const newTags = [];
@@ -89,13 +86,15 @@ const FoodView = props => {
       const veganRes = await AsyncStorage.getItem('isVegan');
       if (veganRes === 'true') newTags.push('vegan');
       const d = new Date();
-      newTags.push(
+      const nextMeal =
         d.getHours() < 11
           ? 'breakfast'
           : d.getHours() < 16
           ? 'lunch'
-          : 'dinner',
-      );
+          : 'dinner';
+
+      newTags.push(nextMeal);
+      setWhichMeal(nextMeal);
       setTags(newTags);
     };
     setVeg();
@@ -116,6 +115,8 @@ const FoodView = props => {
             },
             body: JSON.stringify({
               tags: tags,
+              minCalories: calRange[0],
+              maxCalories: calRange[1],
             }),
           },
         );
@@ -123,12 +124,20 @@ const FoodView = props => {
           throw 'poop';
         }
         const recvdMeals = await res.json();
-
-        setMeals(
-          recvdMeals.filter(
-            meal => meal.calories < calRange[1] && meal.calories > calRange[0],
-          ),
-        );
+        Geolocation.getCurrentPosition(pos => {
+          setMeals(
+            recvdMeals
+              .filter(
+                meal =>
+                  meal.calories < calRange[1] && meal.calories > calRange[0],
+              )
+              .sort(
+                (a, b) =>
+                  calcDistance(pos.coords, a.coordinates) <
+                  calcDistance(pos.coords, b.coordinates),
+              ),
+          );
+        });
       } catch (e) {
         console.error(e);
       }
@@ -140,20 +149,24 @@ const FoodView = props => {
     <View style={{flex: 1, paddingTop: 40}}>
       <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
       <ScreenTitle>Next meal: {whichMeal}</ScreenTitle>
-      <FlatList
-        data={meals}
-        renderItem={({item}) => (
-          <NearbyMealItem
-            key={item.item + item.restaurant}
-            distance={''}
-            {...item}
-            onPress={() =>
-              props.navigation.navigate('MealInfoModal', {...item})
-            }
-          />
-        )}
-        keyExtractor={item => item.item}
-      />
+      {meals ? (
+        <FlatList
+          data={meals}
+          renderItem={({item}) => (
+            <NearbyMealItem
+              key={item.item + item.restaurant}
+              distance={''}
+              {...item}
+              onPress={() =>
+                props.navigation.navigate('MealInfoModal', {...item})
+              }
+            />
+          )}
+          keyExtractor={item => item.item}
+        />
+      ) : (
+        <ActivityIndicator size="large" />
+      )}
     </View>
   );
 };
