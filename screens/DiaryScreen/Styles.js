@@ -20,3 +20,11 @@ export const SubHeader = styled.Text`
   margin-bottom: 5px;
   margin-top: 5px;
 `;
+
+export const CustomMealContainer = styled.View`
+  margin-top: 35px;
+`;
+
+export const InputContainer = styled.View`
+  margin-bottom: 10px;
+`;

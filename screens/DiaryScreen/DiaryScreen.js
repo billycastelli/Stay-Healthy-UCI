@@ -1,12 +1,20 @@
 import 'react-native-gesture-handler';
 import React, {useState, useEffect} from 'react';
 import {Text, View, Button, FlatList} from 'react-native';
+import {Input, CheckBox} from 'react-native-elements';
 import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
 import AppContext from '../../AppContext';
 
-import {TouchableEntryPreview, FoodEntry, SubHeader} from './Styles';
+import {
+  TouchableEntryPreview,
+  FoodEntry,
+  SubHeader,
+  CustomMealContainer,
+  InputContainer,
+} from './Styles';
 import {ScreenContainer, ScreenTitle} from '../FoodScreen/Styles';
+import {BottomButton, ColorButtonText} from '../Styles';
 
 class TabHeader extends React.Component {
   render() {
@@ -25,13 +33,63 @@ class TabHeader extends React.Component {
   }
 }
 
+function CustomMealPopup({route, navigation}) {
+  const {id} = route.params;
+
+  const [calories, setCalories] = useState(0);
+  const [mealName, setMealName] = useState('');
+  const [isBreakfast, setIsBreakfast] = useState(false);
+  const [isLunch, setIsLunch] = useState(false);
+  const [isDinner, setIsDinner] = useState(false);
+
+  return (
+    <ScreenContainer>
+      <CustomMealContainer>
+        <ScreenTitle>Add custom meal</ScreenTitle>
+        <Text>{id}</Text>
+        <InputContainer>
+          <Input
+            label="Custom meal name"
+            placeholder="Salad"
+            onChangeText={data => setMealName(data)}
+          />
+        </InputContainer>
+        <InputContainer>
+          <Input
+            label="Custom meal calories"
+            placeholder="400"
+            onChangeText={data => setCalories(data)}
+          />
+        </InputContainer>
+        <InputContainer>
+          <CheckBox
+            title="Breakfast"
+            checked={isBreakfast}
+            onPress={() => setIsBreakfast(isBreakfast => !isBreakfast)}
+          />
+          <CheckBox
+            title="Lunch"
+            checked={isLunch}
+            onPress={() => setIsLunch(isLunch => !isLunch)}
+          />
+          <CheckBox
+            title="Dinner"
+            checked={isDinner}
+            onPress={() => setIsDinner(isDinner => !isDinner)}
+          />
+        </InputContainer>
+      </CustomMealContainer>
+    </ScreenContainer>
+  );
+}
+
 function DiaryEntry({route, navigation}) {
   const {id, log} = route.params;
   const breakfast = log.filter(meal => meal.tags.includes('breakfast'));
   const lunchDinner = log.filter(meal => meal.tags.includes('lunch'));
   const intake = log.reduce((cnt, meal) => cnt + meal.calories, 0);
   return (
-    <ScreenContainer>
+    <ScreenContainer style={{flex: 1}}>
       <ScreenTitle>{id}</ScreenTitle>
       <Text>{intake} total calories consumed</Text>
       <SubHeader>Breakfast</SubHeader>
@@ -55,6 +113,10 @@ function DiaryEntry({route, navigation}) {
           </FoodEntry>
         ))
       )}
+      <BottomButton
+        onPress={() => navigation.navigate('Add Custom Meal', {date: id})}>
+        <ColorButtonText>Add custom item</ColorButtonText>
+      </BottomButton>
     </ScreenContainer>
   );
 }
@@ -135,10 +197,11 @@ const DiaryView = props => {
 };
 
 const DiaryStack = createStackNavigator();
+const RootStack = createStackNavigator();
 
-function DiaryScreen() {
+function DiaryStackScreen() {
   return (
-    <DiaryStack.Navigator mode="card">
+    <DiaryStack.Navigator>
       <DiaryStack.Screen
         name="DiaryView"
         component={DiaryView}
@@ -146,6 +209,23 @@ function DiaryScreen() {
       />
       <DiaryStack.Screen name="DiaryEntry" component={DiaryEntry} />
     </DiaryStack.Navigator>
+  );
+}
+
+function DiaryScreen() {
+  return (
+    <RootStack.Navigator mode="modal">
+      <RootStack.Screen
+        name="Diary"
+        component={DiaryStackScreen}
+        options={{headerShown: false}}
+      />
+      <RootStack.Screen
+        name="Add Custom Meal"
+        component={CustomMealPopup}
+        options={{headerShown: false}}
+      />
+    </RootStack.Navigator>
   );
 }
 
