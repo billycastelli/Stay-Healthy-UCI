@@ -16,12 +16,12 @@ import {
   ScreenTitle,
   ScreenContainer,
   SingleMealContainer,
-  AddMealTouchable,
   MealListingInfo,
   MealListingDesc,
-  ColorButtonText,
   DatePickerContainer,
 } from './Styles.js';
+
+import {ColorButtonText, BottomButton} from '../Styles';
 
 const calcDistance = (userCoords, restaurantCoords) => {
   return Math.sqrt(
@@ -197,7 +197,7 @@ function MealInfoModal({route, navigation}) {
           onChange={(e, d) => setDate(d)}
         />
       </DatePickerContainer>
-      <AddMealTouchable
+      <BottomButton
         onPress={() =>
           addDiaryEntry(
             {
@@ -210,7 +210,7 @@ function MealInfoModal({route, navigation}) {
           )
         }>
         <ColorButtonText> Add meal</ColorButtonText>
-      </AddMealTouchable>
+      </BottomButton>
     </SingleMealContainer>
   );
 }
