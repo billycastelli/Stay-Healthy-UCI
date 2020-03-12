@@ -28,3 +28,7 @@ export const CustomMealContainer = styled.View`
 export const InputContainer = styled.View`
   margin-bottom: 10px;
 `;
+
+export const TagChoiceContainer = styled(InputContainer)`
+  display: flex;
+`;

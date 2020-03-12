@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useState, useEffect} from 'react';
-import {Text, View, Button, FlatList} from 'react-native';
+import {Text, View, Button, FlatList, ScrollView} from 'react-native';
 import {Input, CheckBox} from 'react-native-elements';
 import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -12,6 +12,7 @@ import {
   SubHeader,
   CustomMealContainer,
   InputContainer,
+  TagChoiceContainer,
 } from './Styles';
 import {ScreenContainer, ScreenTitle} from '../FoodScreen/Styles';
 import {BottomButton, ColorButtonText} from '../Styles';
@@ -42,44 +43,112 @@ function CustomMealPopup({route, navigation}) {
   const [isLunch, setIsLunch] = useState(false);
   const [isDinner, setIsDinner] = useState(false);
 
+  const [tags, setTags] = useState([
+    {
+      tag: 'chicken',
+      checked: false,
+    },
+    {
+      tag: 'beef',
+      checked: false,
+    },
+    {
+      tag: 'vegan',
+      checked: false,
+    },
+    {
+      tag: 'vegetarian',
+      checked: false,
+    },
+    {
+      tag: 'fried',
+      checked: false,
+    },
+    {
+      tag: 'grilled',
+      checked: false,
+    },
+    {
+      tag: 'cheese',
+      checked: false,
+    },
+    {
+      tag: 'sandwich',
+      checked: false,
+    },
+    {
+      tag: 'burger',
+      checked: false,
+    },
+    {
+      tag: 'salad',
+      checked: false,
+    },
+  ]);
+
   return (
-    <ScreenContainer>
-      <CustomMealContainer>
-        <ScreenTitle>Add custom meal</ScreenTitle>
-        <Text>{id}</Text>
-        <InputContainer>
-          <Input
-            label="Custom meal name"
-            placeholder="Salad"
-            onChangeText={data => setMealName(data)}
-          />
-        </InputContainer>
-        <InputContainer>
-          <Input
-            label="Custom meal calories"
-            placeholder="400"
-            onChangeText={data => setCalories(data)}
-          />
-        </InputContainer>
-        <InputContainer>
-          <CheckBox
-            title="Breakfast"
-            checked={isBreakfast}
-            onPress={() => setIsBreakfast(isBreakfast => !isBreakfast)}
-          />
-          <CheckBox
-            title="Lunch"
-            checked={isLunch}
-            onPress={() => setIsLunch(isLunch => !isLunch)}
-          />
-          <CheckBox
-            title="Dinner"
-            checked={isDinner}
-            onPress={() => setIsDinner(isDinner => !isDinner)}
-          />
-        </InputContainer>
-      </CustomMealContainer>
-    </ScreenContainer>
+    <ScrollView>
+      <ScreenContainer>
+        <CustomMealContainer>
+          <ScreenTitle>Add custom meal</ScreenTitle>
+          <InputContainer>
+            <Text>Eat something not in our database? Add it here.</Text>
+          </InputContainer>
+          <InputContainer>
+            <Input
+              label="Custom meal name"
+              placeholder="Salad"
+              onChangeText={data => setMealName(data)}
+            />
+          </InputContainer>
+          <InputContainer>
+            <Input
+              label="Custom meal calories"
+              placeholder="400"
+              onChangeText={data => setCalories(data)}
+            />
+          </InputContainer>
+          <InputContainer>
+            <CheckBox
+              title="Breakfast"
+              checked={isBreakfast}
+              onPress={() => setIsBreakfast(isBreakfast => !isBreakfast)}
+            />
+            <CheckBox
+              title="Lunch"
+              checked={isLunch}
+              onPress={() => setIsLunch(isLunch => !isLunch)}
+            />
+            <CheckBox
+              title="Dinner"
+              checked={isDinner}
+              onPress={() => setIsDinner(isDinner => !isDinner)}
+            />
+          </InputContainer>
+          <InputContainer>
+            <Text>Meal tags</Text>
+          </InputContainer>
+          <TagChoiceContainer>
+            {tags.map(item => (
+              <CheckBox
+                title={item.tag}
+                checked={item.checked}
+                onPress={() =>
+                  setTags(t => {
+                    const curTag = t.filter(
+                      allTags => allTags.tag === item.tag,
+                    );
+                    curTag[0].checked = !curTag[0].checked;
+                    return t;
+                  })
+                }
+                key={item.tag}
+              />
+            ))}
+          </TagChoiceContainer>
+        </CustomMealContainer>
+      </ScreenContainer>
+    </ScrollView>
   );
 }
 
