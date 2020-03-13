@@ -109,12 +109,20 @@ function CustomMealPopup({route, navigation}) {
       return;
     }
 
+    let mealTypes = [];
+    if (isBreakfast) mealTypes.push('breakfast');
+    if (isLunch) mealTypes.push('lunch');
+    if (isDinner) mealTypes.push('dinner');
+
     addDiaryEntry(
       {
         name: mealName,
         location: 'Custom',
         calories: Number(calories),
-        tags: tags.filter(t => t.checked).map(t => t.tag),
+        tags: tags
+          .filter(t => t.checked)
+          .map(t => t.tag)
+          .concat(mealTypes),
       },
       date,
     );
