@@ -31,4 +31,5 @@ export const InputContainer = styled.View`
 
 export const TagChoiceContainer = styled(InputContainer)`
   display: flex;
+  margin-bottom: 40px;
 `;

@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React, {useState, useEffect} from 'react';
-import {Text, View, Button, FlatList, ScrollView} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import {Text, View, Button, FlatList, ScrollView, Alert} from 'react-native';
 import {Input, CheckBox} from 'react-native-elements';
 import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -35,7 +35,8 @@ class TabHeader extends React.Component {
 }
 
 function CustomMealPopup({route, navigation}) {
-  const {id} = route.params;
+  const {date} = route.params;
+  const {addDiaryEntry} = useContext(AppContext);
 
   const [calories, setCalories] = useState(0);
   const [mealName, setMealName] = useState('');
@@ -85,6 +86,39 @@ function CustomMealPopup({route, navigation}) {
       checked: false,
     },
   ]);
+
+  const showError = msg => {
+    Alert.alert('Please fill in all fields', msg, [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]);
+  };
+
+  const handleButtonPress = () => {
+    if (!isLunch && !isDinner && !isBreakfast) {
+      showError('Please specify the type of meal');
+      return;
+    }
+
+    if (mealName.length === 0) {
+      showError('Please enter a valid meal name');
+      return;
+    }
+
+    if (calories.length === 0 || !Number(calories)) {
+      showError('Please enter a valid nunber of calories');
+      return;
+    }
+
+    addDiaryEntry(
+      {
+        name: mealName,
+        location: 'Custom',
+        calories: Number(calories),
+        tags: tags.filter(t => t.checked).map(t => t.tag),
+      },
+      date,
+    );
+  };
 
   return (
     <ScrollView>
@@ -147,6 +181,9 @@ function CustomMealPopup({route, navigation}) {
             ))}
           </TagChoiceContainer>
         </CustomMealContainer>
+        <BottomButton onPress={handleButtonPress}>
+          <ColorButtonText>Add item</ColorButtonText>
+        </BottomButton>
       </ScreenContainer>
     </ScrollView>
   );
@@ -154,6 +191,7 @@ function CustomMealPopup({route, navigation}) {
 
 function DiaryEntry({route, navigation}) {
   const {id, log} = route.params;
+
   const breakfast = log.filter(meal => meal.tags.includes('breakfast'));
   const lunchDinner = log.filter(meal => meal.tags.includes('lunch'));
   const intake = log.reduce((cnt, meal) => cnt + meal.calories, 0);
