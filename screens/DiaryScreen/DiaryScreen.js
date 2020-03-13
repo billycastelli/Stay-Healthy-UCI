@@ -35,7 +35,7 @@ class TabHeader extends React.Component {
 }
 
 function CustomMealPopup({route, navigation}) {
-  const {date} = route.params;
+  const {date, log} = route.params;
   const {addDiaryEntry} = useContext(AppContext);
 
   const [calories, setCalories] = useState(0);
@@ -114,18 +114,22 @@ function CustomMealPopup({route, navigation}) {
     if (isLunch) mealTypes.push('lunch');
     if (isDinner) mealTypes.push('dinner');
 
-    addDiaryEntry(
-      {
-        name: mealName,
-        location: 'Custom',
-        calories: Number(calories),
-        tags: tags
-          .filter(t => t.checked)
-          .map(t => t.tag)
-          .concat(mealTypes),
-      },
-      date,
-    );
+    const thisEntry = {
+      name: mealName,
+      location: 'Custom',
+      calories: Number(calories),
+      tags: tags
+        .filter(t => t.checked)
+        .map(t => t.tag)
+        .concat(mealTypes),
+    };
+
+    addDiaryEntry(thisEntry, date);
+
+    Alert.alert('Meal added! ✅', 'Added new custom meal to food diary.', [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]);
+    navigation.navigate('DiaryEntry', {id: date, log: log.concat(thisEntry)});
   };
 
   return (
@@ -229,7 +233,9 @@ function DiaryEntry({route, navigation}) {
         ))
       )}
       <BottomButton
-        onPress={() => navigation.navigate('Add Custom Meal', {date: id})}>
+        onPress={() =>
+          navigation.navigate('Add Custom Meal', {date: id, log: log})
+        }>
         <ColorButtonText>Add custom item</ColorButtonText>
       </BottomButton>
     </ScreenContainer>
@@ -285,7 +291,6 @@ const DiaryView = props => {
     <View style={{flex: 1, marginTop: 40}}>
       <TabHeader headerText="Diary" bgColor="#d87073" />
       <ScreenContainer>
-        <Text>Hi</Text>
         <View style={{height: '100%'}}>
           <FlatList
             data={diaryEntries}
