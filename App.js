@@ -6,8 +6,8 @@
  * @flow
  */
 
+import {RoundedContainer} from './screens/FoodScreen/Styles';
 import ModalDropdown from 'react-native-modal-dropdown';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   LineChart,
@@ -259,22 +259,85 @@ class ActivityView extends React.Component {
         <View style={{flex: 1, paddingTop: 40}}>
           <TabHeader headerText="Activity analyzer" bgColor="#6c8672" />
         </View>
-        <View
+
+        <RoundedContainer
           style={{
             flex: 5,
-            justifyContent: 'center',
-            alignItems: 'center',
+            marginTop: 18,
+            paddingTop: 8,
+            paddingBottom: 18,
           }}>
-          <Text style={{fontSize: 24, fontWeight: 'bold', padding: 20}}>
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: '700',
+              marginBottom: 18,
+            }}>
             {greeting}
           </Text>
-          <Text>Today's steps: {this.state.todaySteps}</Text>
-          <Text>Average steps this week: {avg_steps}</Text>
-          <Text>Average daily calorie burn: {avg_calories}</Text>
-        </View>
-        <View>{step_chart}</View>
-        <View>{walking_chart}</View>
+          <Text style={{fontSize: 18, fontWeight: '400', marginBottom: 0}}>
+            Let's take a look at your activity stats
+          </Text>
+        </RoundedContainer>
+        <ActivityBox
+          boxColor="#729e9b"
+          textColor="#f0f0f0"
+          labelText="Today's steps"
+          labelFontSize="28"
+          valueText={this.state.todaySteps}
+        />
+        <ActivityBox
+          boxColor="#bf92d4"
+          textColor="#f0f0f0"
+          labelText="Average steps this week"
+          labelFontSize="28"
+          valueText={avg_steps}
+        />
+
+        <ActivityBox
+          boxColor="#c2b086"
+          textColor="#f2f2f2"
+          labelText="Average daily calorie burn"
+          labelFontSize="28"
+          valueText={avg_calories}
+        />
+
+        <RoundedContainer>{step_chart}</RoundedContainer>
+        <RoundedContainer>{walking_chart}</RoundedContainer>
       </ScrollView>
+    );
+  }
+}
+
+class ActivityBox extends React.Component {
+  render() {
+    boxColor = this.props.boxColor;
+    textColor = this.props.textColor;
+    labelText = this.props.labelText;
+    valueText = this.props.valueText;
+    labelFontSize = parseInt(this.props.labelFontSize);
+    return (
+      <RoundedContainer
+        style={{
+          backgroundColor: boxColor,
+        }}>
+        <Text
+          style={{
+            fontSize: labelFontSize,
+            fontWeight: '700',
+            color: textColor,
+          }}>
+          {labelText}
+        </Text>
+        <Text
+          style={{
+            fontSize: 48,
+            fontWeight: '700',
+            color: textColor,
+          }}>
+          {valueText}
+        </Text>
+      </RoundedContainer>
     );
   }
 }
@@ -296,10 +359,8 @@ class LineActivityChart extends React.Component {
       <React.Fragment>
         <Text
           style={{
-            fontSize: 14,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            paddingTop: 8,
+            fontSize: 28,
+            fontWeight: '700',
           }}>
           {this.props.title}
         </Text>
@@ -311,8 +372,7 @@ class LineActivityChart extends React.Component {
           bezier
           fromZero
           style={{
-            borderRadius: 10,
-            paddingLeft: 10,
+            padding: 4,
           }}
         />
       </React.Fragment>
@@ -485,11 +545,21 @@ class ProfileView extends React.Component {
   render() {
     let emptyProfile = (
       <React.Fragment>
-        <Card title="New user">
+        <RoundedContainer style={{marginTop: 15}}>
+          <Text
+            style={{
+              fontWeight: '700',
+              fontSize: 24,
+              marginTop: 4,
+              paddingLeft: 4,
+              paddingBottom: 12,
+            }}>
+            New user
+          </Text>
           <Text style={{fontSize: 16}}>
             Fill our your profile to begin your health journey!
           </Text>
-        </Card>
+        </RoundedContainer>
       </React.Fragment>
     );
 
@@ -523,44 +593,45 @@ class ProfileView extends React.Component {
               fontSize: 18,
               fontWeight: 'bold',
               paddingTop: 12,
-              paddingLeft: 9,
-              paddingBottom: 8,
+              paddingLeft: 12,
+              marginBottom: 8,
             }}>
             Metrics
           </Text>
 
-          <ProfileInput
-            attribute="name"
-            handleChangeFunction={this.handleUsernameChange}
-            stateInput={this.state.nameInput}
-            saveFunction={this.saveNameInput}
-            placeholder="Lisa"
-          />
+          <RoundedContainer>
+            <ProfileInput
+              attribute="name"
+              handleChangeFunction={this.handleUsernameChange}
+              stateInput={this.state.nameInput}
+              saveFunction={this.saveNameInput}
+              placeholder="Lisa"
+            />
 
-          <ProfileInput
-            attribute="age (years)"
-            handleChangeFunction={this.handleAgeChange}
-            stateInput={this.state.ageInput}
-            saveFunction={this.saveAgeInput}
-            placeholder="21"
-          />
+            <ProfileInput
+              attribute="age (years)"
+              handleChangeFunction={this.handleAgeChange}
+              stateInput={this.state.ageInput}
+              saveFunction={this.saveAgeInput}
+              placeholder="21"
+            />
 
-          <ProfileInput
-            attribute="height (inches)"
-            handleChangeFunction={this.handleHeightChange}
-            stateInput={this.state.heightInput}
-            saveFunction={this.saveHeightInput}
-            placeholder="64"
-          />
+            <ProfileInput
+              attribute="height (inches)"
+              handleChangeFunction={this.handleHeightChange}
+              stateInput={this.state.heightInput}
+              saveFunction={this.saveHeightInput}
+              placeholder="64"
+            />
 
-          <ProfileInput
-            attribute="weight (pounds)"
-            handleChangeFunction={this.handleWeightChange}
-            stateInput={this.state.weightInput}
-            saveFunction={this.saveWeightInput}
-            placeholder="150"
-          />
-
+            <ProfileInput
+              attribute="weight (pounds)"
+              handleChangeFunction={this.handleWeightChange}
+              stateInput={this.state.weightInput}
+              saveFunction={this.saveWeightInput}
+              placeholder="150"
+            />
+          </RoundedContainer>
           <Text
             style={{
               fontSize: 18,
@@ -730,23 +801,47 @@ class ProfileCard extends React.Component {
     }
 
     return (
-      <React.Fragment>
-        <Card title={this.props.username}>
-          <Text style={{fontSize: 18, paddingBottom: 4}}>
-            Age: {this.props.age}
-          </Text>
-          <Text style={{fontSize: 18, paddingBottom: 4}}>
-            Height: {this.props.height}
-          </Text>
-          <Text style={{fontSize: 18, paddingBottom: 4}}>
-            Weight: {this.props.weight}
-          </Text>
-          <Text style={{fontSize: 18, paddingBottom: 4}}>BMI: {bmi}</Text>
-          <Text style={{fontSize: 18, paddingBottom: 4}}>
-            Daily calories: {calories}
-          </Text>
-        </Card>
-      </React.Fragment>
+      <RoundedContainer style={{marginTop: 15}}>
+        <Text
+          style={{
+            fontWeight: '700',
+            fontSize: 36,
+            marginTop: 4,
+            paddingLeft: 4,
+            paddingBottom: 12,
+          }}>
+          {this.props.username}
+        </Text>
+        <Text style={{fontSize: 18, paddingBottom: 4, paddingLeft: 4}}>
+          Age: {this.props.age}
+        </Text>
+        <Text style={{fontSize: 18, paddingBottom: 4, paddingLeft: 4}}>
+          Height: {this.props.height}
+        </Text>
+        <Text style={{fontSize: 18, paddingBottom: 4, paddingLeft: 4}}>
+          Weight: {this.props.weight}
+        </Text>
+        <Text style={{fontSize: 18, paddingBottom: 4, paddingLeft: 4}}>
+          Daily calories: {calories}
+        </Text>
+      </RoundedContainer>
+      // <React.Fragment>
+      //   <Card title={this.props.username}>
+      // <Text style={{fontSize: 18, paddingBottom: 4}}>
+      //   Age: {this.props.age}
+      // </Text>
+      // <Text style={{fontSize: 18, paddingBottom: 4}}>
+      //   Height: {this.props.height}
+      // </Text>
+      // <Text style={{fontSize: 18, paddingBottom: 4}}>
+      //   Weight: {this.props.weight}
+      // </Text>
+      // <Text style={{fontSize: 18, paddingBottom: 4}}>BMI: {bmi}</Text>
+      // <Text style={{fontSize: 18, paddingBottom: 4}}>
+      //   Daily calories: {calories}
+      // </Text>
+      //   </Card>
+      // </React.Fragment>
     );
   }
 }
@@ -844,8 +939,9 @@ class App extends React.Component {
                   iconName = 'spoon';
                 } else if (route.name === 'Profile') {
                   iconName = 'user-circle-o';
+                } else if (route.name === 'Diary') {
+                  iconName = 'book';
                 }
-
                 // You can return any component that you like here!
                 return <Icon name={iconName} size={25} color="grey" />;
               },
@@ -856,8 +952,8 @@ class App extends React.Component {
             }}>
             <Tab.Screen name="Activity" component={ActivityView} />
             <Tab.Screen name="Food" component={FoodScreen} />
-            <Tab.Screen name="Profile" component={ProfileView} />
             <Tab.Screen name="Diary" component={DiaryScreen} />
+            <Tab.Screen name="Profile" component={ProfileView} />
           </Tab.Navigator>
         </AppContext.Provider>
       </NavigationContainer>

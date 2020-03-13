@@ -20,3 +20,9 @@ export const SubHeader = styled.Text`
   margin-bottom: 5px;
   margin-top: 5px;
 `;
+
+export const ScreenTitle = styled.Text`
+  color: black;
+  font-weight: 800;
+  font-size: 30px;
+`;

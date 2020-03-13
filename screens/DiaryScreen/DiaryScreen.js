@@ -5,8 +5,13 @@ import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
 import AppContext from '../../AppContext';
 
-import {TouchableEntryPreview, FoodEntry, SubHeader} from './Styles';
-import {ScreenContainer, ScreenTitle} from '../FoodScreen/Styles';
+import {
+  TouchableEntryPreview,
+  FoodEntry,
+  SubHeader,
+  ScreenTitle,
+} from './Styles';
+import {ScreenContainer} from '../FoodScreen/Styles';
 
 class TabHeader extends React.Component {
   render() {
