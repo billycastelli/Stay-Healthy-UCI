@@ -745,16 +745,18 @@ class App extends React.Component {
   addDiaryEntry = (food, date) => {
     if (!date) {
       date = new Date();
-      // date = date.toISOString();
-      // date = date.slice(0, date.indexOf('T'));
       date = date.toDateString();
     }
+
     const updateDiary = async () => {
       try {
-        // await AsyncStorage.setItem('diary', 'my secret value');
         const diaryJSON = await AsyncStorage.getItem('diary');
         let diary = JSON.parse(diaryJSON);
-        if (!diary) diary = [];
+        if (!diary) {
+          diary = [];
+        }
+
+        // check if entry exists and append meal item to existing entry
         const entry = diary.filter(obj => obj.id === date);
         if (entry.length < 1) {
           diary.push({
@@ -764,6 +766,7 @@ class App extends React.Component {
         } else {
           entry[0].log.push(food);
         }
+
         await AsyncStorage.setItem('diary', JSON.stringify(diary));
         console.log('================ updated diary:', diary);
       } catch (e) {
