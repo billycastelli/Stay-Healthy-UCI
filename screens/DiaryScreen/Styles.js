@@ -26,3 +26,16 @@ export const ScreenTitle = styled.Text`
   font-weight: 800;
   font-size: 30px;
 `;
+
+export const CustomMealContainer = styled.View`
+  margin-top: 35px;
+`;
+
+export const InputContainer = styled.View`
+  margin-bottom: 10px;
+`;
+
+export const TagChoiceContainer = styled(InputContainer)`
+  display: flex;
+  margin-bottom: 40px;
+`;
