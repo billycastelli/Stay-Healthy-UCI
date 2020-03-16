@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import AppContext from '../../AppContext';
 
 import {
-  TouchableEntryPreview,
   FoodEntry,
   SubHeader,
   ScreenTitle,
@@ -16,7 +15,12 @@ import {
   TagChoiceContainer,
 } from './Styles';
 import {ScreenContainer} from '../FoodScreen/Styles';
-import {BottomButton, ColorButtonText} from '../Styles';
+import {
+  BottomButton,
+  ColorButtonText,
+  TouchableWhite,
+  ButtonTitle,
+} from '../Styles';
 
 class TabHeader extends React.Component {
   render() {
@@ -245,12 +249,12 @@ function DiaryEntry({route, navigation}) {
 
 const EntryPreview = props => {
   return (
-    <TouchableEntryPreview onPress={props.onPress}>
-      <Text>{props.id}</Text>
+    <TouchableWhite onPress={props.onPress}>
+      <ButtonTitle>{props.id}</ButtonTitle>
       <Text>
         {props.log.length} {props.log.length > 1 ? 'entries' : 'entry'}
       </Text>
-    </TouchableEntryPreview>
+    </TouchableWhite>
   );
 };
 

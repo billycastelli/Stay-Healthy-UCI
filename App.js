@@ -6,7 +6,7 @@
  * @flow
  */
 
-import {RoundedContainer} from './screens/FoodScreen/Styles';
+import {RoundedContainer} from './screens/Styles';
 import ModalDropdown from 'react-native-modal-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
@@ -878,7 +878,8 @@ class ProfileInput extends React.Component {
             buttonStyle={{backgroundColor: 'cornflowerblue'}}
             type="solid"
             title="Submit"
-            onPress={this.props.saveFunction}></RneButton>
+            onPress={this.props.saveFunction}
+          />
         </View>
       </View>
     );
@@ -914,6 +915,23 @@ class App extends React.Component {
 
         await AsyncStorage.setItem('diary', JSON.stringify(diary));
         console.log('================ updated diary:', diary);
+
+        // update preferences matrix
+        const prefsJSON = await AsyncStorage.getItem('prefsMatrix');
+        let prefsMatrix = JSON.parse(prefsJSON);
+        if (!prefsMatrix) {
+          prefsMatrix = {};
+        }
+        for (const tag of food.tags) {
+          if (tag !== 'breakfast' && tag !== 'lunch' && tag !== 'dinner') {
+            if (prefsMatrix[tag]) {
+              prefsMatrix[tag]++;
+            } else {
+              prefsMatrix[tag] = 1;
+            }
+          }
+        }
+        await AsyncStorage.setItem('prefsMatrix', JSON.stringify(prefsMatrix));
       } catch (e) {
         // save error
         console.error(e);
