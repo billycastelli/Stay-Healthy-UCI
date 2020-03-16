@@ -15,6 +15,7 @@ import {
   TouchableMealListing,
   ScreenTitle,
   ScreenContainer,
+  MainScreenTitle,
   SingleMealContainer,
   MealListingInfo,
   MealListingDesc,
@@ -148,7 +149,7 @@ const FoodView = props => {
   return (
     <View style={{flex: 1, paddingTop: 40}}>
       <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
-      <ScreenTitle>Next meal: {whichMeal}</ScreenTitle>
+      <MainScreenTitle>Next meal: {whichMeal}</MainScreenTitle>
       {meals ? (
         <FlatList
           data={meals}
