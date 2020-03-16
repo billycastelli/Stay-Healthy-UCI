@@ -25,7 +25,7 @@ export const ScreenTitle = styled.Text`
 `;
 
 export const MainScreenTitle = styled(ScreenTitle)`
-  padding-left: 12px;
+  padding: 12px;
 `;
 
 export const TouchableMealListing = styled.TouchableOpacity`
