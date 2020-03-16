@@ -9,12 +9,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {Text, View, FlatList, ActivityIndicator} from 'react-native';
 
 import {
-  NearbyMeal,
-  MealName,
-  MealOrigin,
-  TouchableMealListing,
   ScreenTitle,
-  ScreenContainer,
   MainScreenTitle,
   SingleMealContainer,
   MealListingInfo,
@@ -22,7 +17,12 @@ import {
   DatePickerContainer,
 } from './Styles.js';
 
-import {ColorButtonText, BottomButton} from '../Styles';
+import {
+  ColorButtonText,
+  BottomButton,
+  TouchableWhite,
+  ButtonTitle,
+} from '../Styles';
 
 const calcDistance = (userCoords, restaurantCoords) => {
   return Math.sqrt(
@@ -55,16 +55,14 @@ class NearbyMealItem extends React.Component {
 
   render() {
     return (
-      <TouchableMealListing onPress={this.props.onPress}>
-        <NearbyMeal>
-          <MealName>{this.props.item}</MealName>
-          <MealOrigin>
-            {this.props.restaurant}
-            {this.props.price > 0 && ` • $${this.props.price}`} •{' '}
-            {this.props.calories} cal
-          </MealOrigin>
-        </NearbyMeal>
-      </TouchableMealListing>
+      <TouchableWhite onPress={this.props.onPress}>
+        <ButtonTitle>{this.props.item}</ButtonTitle>
+        <Text>
+          {this.props.restaurant}
+          {this.props.price > 0 && ` • $${this.props.price}`} •{' '}
+          {this.props.calories} cal {`score: ${this.props.score}`}
+        </Text>
+      </TouchableWhite>
     );
   }
 }
@@ -125,6 +123,21 @@ const FoodView = props => {
           throw 'poop';
         }
         const recvdMeals = await res.json();
+        const prefsJSON = await AsyncStorage.getItem('prefsMatrix');
+        let prefsMatrix = JSON.parse(prefsJSON);
+        if (!prefsMatrix) {
+          prefsMatrix = {};
+        }
+        recvdMeals.map(meal => {
+          const score = meal.tags.reduce((cnt, tag) => {
+            if (prefsMatrix[tag]) {
+              return prefsMatrix[tag] + cnt;
+            }
+            return cnt;
+          }, 0);
+          meal.score = score;
+          return meal;
+        });
         Geolocation.getCurrentPosition(pos => {
           setMeals(
             recvdMeals
@@ -134,8 +147,8 @@ const FoodView = props => {
               )
               .sort(
                 (a, b) =>
-                  calcDistance(pos.coords, a.coordinates) <
-                  calcDistance(pos.coords, b.coordinates),
+                  calcDistance(pos.coords, a.coordinates) * 0.5 + a.score <
+                  calcDistance(pos.coords, b.coordinates) * 0.5 + b.score,
               ),
           );
         });
@@ -158,9 +171,7 @@ const FoodView = props => {
               key={item.item + item.restaurant}
               distance={''}
               {...item}
-              onPress={() =>
-                props.navigation.navigate('MealInfoModal', {...item})
-              }
+              onPress={() => props.navigation.navigate('Meal Info', {...item})}
             />
           )}
           keyExtractor={item => item.item}
@@ -220,11 +231,11 @@ function FoodScreen() {
   return (
     <FoodStack.Navigator mode="card">
       <FoodStack.Screen
-        name="FoodView"
+        name="All Meals"
         component={FoodView}
         options={{headerShown: false}}
       />
-      <FoodStack.Screen name="MealInfoModal" component={MealInfoModal} />
+      <FoodStack.Screen name="Meal Info" component={MealInfoModal} />
     </FoodStack.Navigator>
   );
 }
