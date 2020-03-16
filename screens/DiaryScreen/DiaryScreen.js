@@ -15,7 +15,7 @@ import {
   InputContainer,
   TagChoiceContainer,
 } from './Styles';
-import {ScreenContainer} from '../FoodScreen/Styles';
+import {ScreenContainer, RoundedContainer} from '../FoodScreen/Styles';
 import {BottomButton, ColorButtonText} from '../Styles';
 
 class TabHeader extends React.Component {
@@ -210,29 +210,54 @@ function DiaryEntry({route, navigation}) {
   const intake = log.reduce((cnt, meal) => cnt + meal.calories, 0);
   return (
     <ScreenContainer style={{flex: 1}}>
-      <ScreenTitle>{id}</ScreenTitle>
-      <Text>{intake} total calories consumed</Text>
-      <SubHeader>Breakfast</SubHeader>
-      {breakfast.length < 1 ? (
-        <Text>No breakfast meals for this day.</Text>
-      ) : (
-        breakfast.map(meal => (
-          <FoodEntry key={meal.name}>
-            <Text>{meal.name}</Text>
-          </FoodEntry>
-        ))
-      )}
-      <SubHeader>Lunch and Dinner</SubHeader>
-      {lunchDinner.length < 1 ? (
-        <Text>No lunch or dinner meals for this day.</Text>
-      ) : (
-        lunchDinner.map(meal => (
-          <FoodEntry key={meal.name}>
-            <Text>{meal.name}</Text>
-            <Text>{meal.calories} cal</Text>
-          </FoodEntry>
-        ))
-      )}
+      <RoundedContainer
+        style={{
+          marginLeft: -8,
+          marginRight: -8,
+          paddingLeft: 8,
+          paddingBottom: 12,
+          backgroundColor: '#c4185d',
+        }}>
+        <ScreenTitle style={{color: '#ffffff'}}>{id}</ScreenTitle>
+        <Text style={{color: '#ffffff'}}>{intake} total calories consumed</Text>
+      </RoundedContainer>
+      <RoundedContainer
+        style={{
+          marginLeft: -8,
+          marginRight: -8,
+          paddingLeft: 8,
+          paddingBottom: 12,
+        }}>
+        <SubHeader>Breakfast</SubHeader>
+        {breakfast.length < 1 ? (
+          <Text>No breakfast meals for this day.</Text>
+        ) : (
+          breakfast.map(meal => (
+            <FoodEntry key={meal.name}>
+              <Text>{meal.name}</Text>
+            </FoodEntry>
+          ))
+        )}
+      </RoundedContainer>
+      <RoundedContainer
+        style={{
+          marginLeft: -8,
+          marginRight: -8,
+          paddingLeft: 8,
+          paddingBottom: 12,
+        }}>
+        <SubHeader>Lunch and Dinner</SubHeader>
+        {lunchDinner.length < 1 ? (
+          <Text>No lunch or dinner meals for this day.</Text>
+        ) : (
+          lunchDinner.map(meal => (
+            <FoodEntry key={meal.name}>
+              <Text>{meal.name}</Text>
+              <Text>{meal.calories} cal</Text>
+            </FoodEntry>
+          ))
+        )}
+      </RoundedContainer>
       <BottomButton
         onPress={() =>
           navigation.navigate('Add Custom Meal', {date: id, log: log})
