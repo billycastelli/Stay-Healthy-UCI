@@ -6,7 +6,7 @@ import AppContext from '../../AppContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {Text, View, FlatList, ActivityIndicator} from 'react-native';
+import {Text, View, FlatList, ActivityIndicator, Alert} from 'react-native';
 
 import {
   ScreenTitle,
@@ -192,6 +192,21 @@ function MealInfoModal({route, navigation}) {
   const {item, restaurant, price, description, tags, calories} = route.params;
   const {addDiaryEntry} = useContext(AppContext);
   const [date, setDate] = useState(new Date());
+
+  const onPressButton = () => {
+    addDiaryEntry(
+      {
+        name: item,
+        location: restaurant,
+        calories: calories,
+        tags: tags,
+      },
+      date.toDateString(),
+    );
+    Alert.alert('Meal added! ✅', `Added "${item}" to food diary.`, [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]);
+  };
   return (
     <SingleMealContainer>
       <ScreenTitle>{item}</ScreenTitle>
@@ -214,18 +229,7 @@ function MealInfoModal({route, navigation}) {
           onChange={(e, d) => setDate(d)}
         />
       </DatePickerContainer>
-      <BottomButton
-        onPress={() =>
-          addDiaryEntry(
-            {
-              name: item,
-              location: restaurant,
-              calories: calories,
-              tags: tags,
-            },
-            date.toDateString(),
-          )
-        }>
+      <BottomButton onPress={onPressButton}>
         <ColorButtonText> Add meal</ColorButtonText>
       </BottomButton>
     </SingleMealContainer>
