@@ -812,40 +812,23 @@ class ProfileCard extends React.Component {
           }}>
           {this.props.username}
         </Text>
-        <Text style={{fontSize: 18, paddingBottom: 4, paddingLeft: 4}}>
+        <Text style={{fontSize: 24, paddingBottom: 4, paddingLeft: 4}}>
           Age: {this.props.age}
         </Text>
-        <Text style={{fontSize: 18, paddingBottom: 4, paddingLeft: 4}}>
+        <Text style={{fontSize: 24, paddingBottom: 4, paddingLeft: 4}}>
           Height: {this.props.height}
         </Text>
-        <Text style={{fontSize: 18, paddingBottom: 4, paddingLeft: 4}}>
+        <Text style={{fontSize: 24, paddingBottom: 4, paddingLeft: 4}}>
           Weight: {this.props.weight}
         </Text>
-        <Text style={{fontSize: 18, paddingBottom: 4, paddingLeft: 4}}>
+        <Text style={{fontSize: 24, paddingBottom: 4, paddingLeft: 4}}>
           BMI: {bmi}
         </Text>
 
-        <Text style={{fontSize: 18, paddingBottom: 4, paddingLeft: 4}}>
-          Daily calories: {calories}
+        <Text style={{fontSize: 24, paddingBottom: 4, paddingLeft: 4}}>
+          Daily cals: {`\t` + calories}
         </Text>
       </RoundedContainer>
-      // <React.Fragment>
-      //   <Card title={this.props.username}>
-      // <Text style={{fontSize: 18, paddingBottom: 4}}>
-      //   Age: {this.props.age}
-      // </Text>
-      // <Text style={{fontSize: 18, paddingBottom: 4}}>
-      //   Height: {this.props.height}
-      // </Text>
-      // <Text style={{fontSize: 18, paddingBottom: 4}}>
-      //   Weight: {this.props.weight}
-      // </Text>
-      // <Text style={{fontSize: 18, paddingBottom: 4}}>BMI: {bmi}</Text>
-      // <Text style={{fontSize: 18, paddingBottom: 4}}>
-      //   Daily calories: {calories}
-      // </Text>
-      //   </Card>
-      // </React.Fragment>
     );
   }
 }

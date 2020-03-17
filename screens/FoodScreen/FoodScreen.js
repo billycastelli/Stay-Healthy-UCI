@@ -79,7 +79,7 @@ const FoodView = props => {
   const [whichMeal, setWhichMeal] = useState('');
   const [refreshing, setRefreshing] = useState(false);
 
-  const calRange = [0, 400];
+  const calRange = [0, 9999];
   const fetchMealsList = async () => {
     try {
       const res = await fetch(

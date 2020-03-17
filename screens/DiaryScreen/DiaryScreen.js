@@ -241,6 +241,7 @@ function DiaryEntry({route, navigation}) {
           breakfast.map(meal => (
             <FoodEntry key={meal.name}>
               <Text>{meal.name}</Text>
+              <Text>{meal.calories} cal</Text>
             </FoodEntry>
           ))
         )}
