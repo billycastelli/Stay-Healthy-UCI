@@ -923,7 +923,13 @@ class App extends React.Component {
           prefsMatrix = {};
         }
         for (const tag of food.tags) {
-          if (tag !== 'breakfast' && tag !== 'lunch' && tag !== 'dinner') {
+          if (
+            tag !== 'breakfast' &&
+            tag !== 'lunch' &&
+            tag !== 'dinner' &&
+            tag !== 'vegan' &&
+            tag !== 'vegetarian'
+          ) {
             if (prefsMatrix[tag]) {
               prefsMatrix[tag]++;
             } else {

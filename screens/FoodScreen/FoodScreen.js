@@ -78,27 +78,7 @@ const FoodView = props => {
   const [whichMeal, setWhichMeal] = useState('');
   const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    const setVeg = async () => {
-      const newTags = [];
-      const vegeRes = await AsyncStorage.getItem('isVegetarian');
-      if (vegeRes === 'true') newTags.push('vegetarian');
-      const veganRes = await AsyncStorage.getItem('isVegan');
-      if (veganRes === 'true') newTags.push('vegan');
-      const d = new Date();
-      const nextMeal =
-        d.getHours() < 11
-          ? 'breakfast'
-          : d.getHours() < 16
-          ? 'lunch'
-          : 'dinner';
-
-      newTags.push(nextMeal);
-      setWhichMeal(nextMeal);
-      setTags(newTags);
-    };
-    setVeg();
-  }, []);
+  useEffect(() => {}, []);
 
   const calRange = [0, 400];
   const fetchMealsList = async () => {
@@ -159,6 +139,26 @@ const FoodView = props => {
 
   const onRefresh = () => {
     setRefreshing(true);
+
+    const setVeg = async () => {
+      const newTags = [];
+      const vegeRes = await AsyncStorage.getItem('isVegetarian');
+      if (vegeRes === 'true') newTags.push('vegetarian');
+      const veganRes = await AsyncStorage.getItem('isVegan');
+      if (veganRes === 'true') newTags.push('vegan');
+      const d = new Date();
+      const nextMeal =
+        d.getHours() < 11
+          ? 'breakfast'
+          : d.getHours() < 16
+          ? 'lunch'
+          : 'dinner';
+
+      newTags.push(nextMeal);
+      setWhichMeal(nextMeal);
+      setTags(newTags);
+    };
+    setVeg();
 
     fetchMealsList();
     setRefreshing(false);
