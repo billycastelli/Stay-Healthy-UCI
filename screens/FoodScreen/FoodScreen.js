@@ -22,6 +22,7 @@ import {
   BottomButton,
   TouchableWhite,
   ButtonTitle,
+  RoundedContainer,
 } from '../Styles';
 
 const calcDistance = (userCoords, restaurantCoords) => {
@@ -211,26 +212,36 @@ function MealInfoModal({route, navigation}) {
     <SingleMealContainer>
       <ScreenTitle>{item}</ScreenTitle>
       <MealListingInfo>
-        <MealListingDesc>{description}</MealListingDesc>
-        <Text>{restaurant}</Text>
-        <Text>{price}</Text>
-        <Text>{calories}</Text>
+        <Text style={{fontSize: 20, fontWeight: 'bold'}}>{restaurant}</Text>
 
-        <Text>{tags.map(tag => `${tag}, `)}</Text>
+        <MealListingDesc style={{paddingTop: 8, paddingBottom: 12}}>
+          {description}
+        </MealListingDesc>
+        <Text style={{fontSize: 18}}>Price: ${price}</Text>
+        <Text style={{fontSize: 18}}>Calories: {calories}</Text>
+
+        {/* <Text>{tags.map(tag => `${tag}, `)}</Text> */}
       </MealListingInfo>
-      <DatePickerContainer>
-        <DateTimePicker
-          testID="dateTimePicker"
-          timeZoneOffsetInMinutes={0}
-          value={date}
-          mode={'date'}
-          is24Hour={true}
-          display="default"
-          onChange={(e, d) => setDate(d)}
-        />
-      </DatePickerContainer>
+
+      <RoundedContainer style={{marginTop: 48}}>
+        <Text style={{fontSize: 24, fontWeight: '700'}}>
+          Add this meal to your diary
+        </Text>
+
+        <DatePickerContainer>
+          <DateTimePicker
+            testID="dateTimePicker"
+            timeZoneOffsetInMinutes={0}
+            value={date}
+            mode={'date'}
+            is24Hour={true}
+            display="default"
+            onChange={(e, d) => setDate(d)}
+          />
+        </DatePickerContainer>
+      </RoundedContainer>
       <BottomButton onPress={onPressButton}>
-        <ColorButtonText> Add meal</ColorButtonText>
+        <ColorButtonText style={{fontSize: 24}}> Add meal</ColorButtonText>
       </BottomButton>
     </SingleMealContainer>
   );

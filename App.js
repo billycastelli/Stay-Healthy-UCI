@@ -821,6 +821,8 @@ class ProfileCard extends React.Component {
         <Text style={{fontSize: 18, paddingBottom: 4, paddingLeft: 4}}>
           Weight: {this.props.weight}
         </Text>
+        <Text style={{fontSize: 18, paddingBottom: 4}}>BMI: {bmi}</Text>
+
         <Text style={{fontSize: 18, paddingBottom: 4, paddingLeft: 4}}>
           Daily calories: {calories}
         </Text>
