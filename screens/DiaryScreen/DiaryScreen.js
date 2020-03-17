@@ -323,21 +323,25 @@ const DiaryView = props => {
       <TabHeader headerText="Diary" bgColor="#d87073" />
       <ScreenContainer>
         <View style={{height: '100%'}}>
-          <FlatList
-            data={diaryEntries}
-            onRefresh={onRefresh}
-            refreshing={refreshing}
-            renderItem={({item}) => (
-              <EntryPreview
-                onPress={() =>
-                  props.navigation.navigate('DiaryEntry', {...item})
-                }
-                key={item.id}
-                {...item}
-              />
-            )}
-            keyExtractor={item => item.id}
-          />
+          {diaryEntries.length < 1 ? (
+            <Text>Click on the Food tab to add meals to your diary!</Text>
+          ) : (
+            <FlatList
+              data={diaryEntries}
+              onRefresh={onRefresh}
+              refreshing={refreshing}
+              renderItem={({item}) => (
+                <EntryPreview
+                  onPress={() =>
+                    props.navigation.navigate('DiaryEntry', {...item})
+                  }
+                  key={item.id}
+                  {...item}
+                />
+              )}
+              keyExtractor={item => item.id}
+            />
+          )}
         </View>
         <Button title="Reset" onPress={resetDiary}>
           Reset Diary
