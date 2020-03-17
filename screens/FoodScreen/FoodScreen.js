@@ -76,6 +76,7 @@ const FoodView = props => {
   const [tags, setTags] = useState([]);
   const [meals, setMeals] = useState(null);
   const [whichMeal, setWhichMeal] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     const setVeg = async () => {
@@ -99,86 +100,92 @@ const FoodView = props => {
     setVeg();
   }, []);
 
-  useEffect(() => {
-    const calRange = [0, 400];
-    const fetchMealsList = async () => {
-      try {
-        const res = await fetch(
-          'https://gb6o73460i.execute-api.us-west-2.amazonaws.com/prod/meals',
-          {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin': '*',
-            },
-            body: JSON.stringify({
-              tags: tags,
-              minCalories: calRange[0],
-              maxCalories: calRange[1],
-            }),
+  const calRange = [0, 400];
+  const fetchMealsList = async () => {
+    try {
+      const res = await fetch(
+        'https://gb6o73460i.execute-api.us-west-2.amazonaws.com/prod/meals',
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
           },
-        );
-        if (!res) {
-          throw 'poop';
-        }
-        const recvdMeals = await res.json();
-        const prefsJSON = await AsyncStorage.getItem('prefsMatrix');
-        let prefsMatrix = JSON.parse(prefsJSON);
-        if (!prefsMatrix) {
-          prefsMatrix = {};
-        }
-        recvdMeals.map(meal => {
-          const score = meal.tags.reduce((cnt, tag) => {
-            if (prefsMatrix[tag]) {
-              return prefsMatrix[tag] + cnt;
-            }
-            return cnt;
-          }, 0);
-          meal.score = score;
-          return meal;
-        });
-        Geolocation.getCurrentPosition(pos => {
-          setMeals(
-            recvdMeals
-              .filter(
-                meal =>
-                  meal.calories < calRange[1] && meal.calories > calRange[0],
-              )
-              .sort(
-                (a, b) =>
-                  calcDistance(pos.coords, a.coordinates) * 0.5 + a.score <
-                  calcDistance(pos.coords, b.coordinates) * 0.5 + b.score,
-              ),
-          );
-        });
-      } catch (e) {
-        console.error(e);
+          body: JSON.stringify({
+            tags: tags,
+            minCalories: calRange[0],
+            maxCalories: calRange[1],
+          }),
+        },
+      );
+      if (!res) {
+        throw 'poop';
       }
-    };
+      const recvdMeals = await res.json();
+      const prefsJSON = await AsyncStorage.getItem('prefsMatrix');
+      let prefsMatrix = JSON.parse(prefsJSON);
+      if (!prefsMatrix) {
+        prefsMatrix = {};
+      }
+      recvdMeals.map(meal => {
+        const score = meal.tags.reduce((cnt, tag) => {
+          if (prefsMatrix[tag]) {
+            return prefsMatrix[tag] + cnt;
+          }
+          return cnt;
+        }, 0);
+        meal.score = score;
+        return meal;
+      });
+      Geolocation.getCurrentPosition(pos => {
+        setMeals(
+          recvdMeals
+            .filter(
+              meal =>
+                meal.calories < calRange[1] && meal.calories > calRange[0],
+            )
+            .sort(
+              (a, b) =>
+                calcDistance(pos.coords, a.coordinates) * 0.5 + a.score <
+                calcDistance(pos.coords, b.coordinates) * 0.5 + b.score,
+            ),
+        );
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
     fetchMealsList();
-  }, [tags]);
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    onRefresh();
+  }, []);
 
   return (
     <View style={{flex: 1, paddingTop: 40}}>
       <TabHeader headerText="What would you like to eat?" bgColor="#d87073" />
       <MainScreenTitle>Next meal: {whichMeal}</MainScreenTitle>
-      {meals ? (
-        <FlatList
-          data={meals}
-          renderItem={({item}) => (
-            <NearbyMealItem
-              key={item.item + item.restaurant}
-              distance={''}
-              {...item}
-              onPress={() => props.navigation.navigate('Meal Info', {...item})}
-            />
-          )}
-          keyExtractor={item => item.item}
-        />
-      ) : (
-        <ActivityIndicator size="large" />
-      )}
+      <FlatList
+        data={meals}
+        onRefresh={onRefresh}
+        refreshing={refreshing}
+        renderItem={({item}) => (
+          <NearbyMealItem
+            key={item.item + item.restaurant}
+            distance={''}
+            {...item}
+            onPress={() => props.navigation.navigate('Meal Info', {...item})}
+          />
+        )}
+        keyExtractor={item => item.item}
+      />
     </View>
   );
 };
