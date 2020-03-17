@@ -3,6 +3,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import {Text, View, Button, FlatList, ScrollView, Alert} from 'react-native';
 import {Input, CheckBox} from 'react-native-elements';
 import {createStackNavigator} from '@react-navigation/stack';
+import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import AppContext from '../../AppContext';
 
@@ -287,18 +288,21 @@ const EntryPreview = props => {
 const DiaryView = props => {
   const [diaryEntries, setDiaryEntries] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const isFocused = useIsFocused();
   useEffect(() => {
-    (async () => {
-      try {
-        const val = await AsyncStorage.getItem('diary');
-        if (val) {
-          setDiaryEntries(JSON.parse(val));
+    if (isFocused) {
+      (async () => {
+        try {
+          const val = await AsyncStorage.getItem('diary');
+          if (val) {
+            setDiaryEntries(JSON.parse(val));
+          }
+        } catch (err) {
+          console.error(err);
         }
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-  }, []);
+      })();
+    }
+  }, [isFocused]);
 
   const resetDiary = async () => {
     await AsyncStorage.setItem('diary', JSON.stringify([]));
@@ -323,6 +327,9 @@ const DiaryView = props => {
       <TabHeader headerText="Diary" bgColor="#d87073" />
       <ScreenContainer>
         <View style={{height: '100%'}}>
+          <Button title="Reset" onPress={resetDiary}>
+            Reset Diary
+          </Button>
           {diaryEntries.length < 1 ? (
             <Text>Click on the Food tab to add meals to your diary!</Text>
           ) : (
@@ -343,9 +350,6 @@ const DiaryView = props => {
             />
           )}
         </View>
-        <Button title="Reset" onPress={resetDiary}>
-          Reset Diary
-        </Button>
       </ScreenContainer>
     </View>
   );
