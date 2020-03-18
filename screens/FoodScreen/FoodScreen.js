@@ -60,8 +60,8 @@ class NearbyMealItem extends React.Component {
         <ButtonTitle>{this.props.item}</ButtonTitle>
         <Text>
           {this.props.restaurant}
-          {this.props.price > 0 && ` • $${this.props.price}`} •{' '}
-          {this.props.calories} cal {`score: ${this.props.score}`}
+          {this.props.price > 0 && ` • $${this.props.price}`}
+          {`  • ${this.props.calories} cal`}
         </Text>
       </TouchableWhite>
     );
