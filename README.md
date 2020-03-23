@@ -1,4 +1,4 @@
-# CS-125-Health-App
+# Stay Healthy UCI
 
 Project created for CS 125 Winter 2020.
 
